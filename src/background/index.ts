@@ -1,7 +1,15 @@
 // PickPerfect Background Service Worker
-// The _execute_action command in manifest.json automatically opens the popup.
-// This service worker handles any future background tasks (context menus, badge, etc.)
 
-chrome.runtime.onInstalled.addListener(() => {
-  console.log("PickPerfect installed");
+import ExtPay from "extpay";
+
+const extpay = ExtPay("pickperfect");
+
+extpay.startBackground();
+
+extpay.getUser().then((user) => {
+  chrome.storage.local.set({ isPremium: user.paid });
+});
+
+extpay.onPaid.addListener((user) => {
+  chrome.storage.local.set({ isPremium: true });
 });

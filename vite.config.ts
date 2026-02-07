@@ -1,9 +1,18 @@
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { resolve } from "path";
+import { copyFileSync } from "fs";
 
 export default defineConfig({
-  plugins: [svelte()],
+  plugins: [
+    svelte(),
+    {
+      name: "copy-extpay",
+      closeBundle() {
+        copyFileSync("node_modules/extpay/dist/ExtPay.js", "dist/ExtPay.js");
+      },
+    },
+  ],
   base: "./",
   build: {
     outDir: "dist",

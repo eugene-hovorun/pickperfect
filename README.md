@@ -10,6 +10,13 @@ A modern, fast, trustworthy color picker Chrome extension. Uses the native `EyeD
 - ⌨️ Keyboard shortcut: `Ctrl+Shift+C`
 - 🔒 Minimal permissions — only `storage`
 
+## Features (Premium) – Coming Soon
+
+- 📦 Export to Tailwind, CSS variables, SCSS, JSON tokens
+- ✅ WCAG contrast checker
+- 🎨 Palette extraction from pages
+- 💾 Saved palette collections
+
 ## Development
 
 ```bash
@@ -31,18 +38,30 @@ npm run build
 - Vite 6
 - Chrome Manifest V3
 - Native EyeDropper API (Chrome 95+)
+- ExtensionPay for premium features
 
 ## File Structure
 
 ```
 src/
-  popup/App.svelte        ← Entire popup UI
-  popup/main.ts           ← Mount point
-  background/index.ts     ← Service worker
-  lib/colors.ts           ← HEX ↔ RGB ↔ HSL conversion
-  lib/storage.ts          ← chrome.storage.local wrapper
+  popup/
+    App.svelte                    ← Premium check + routing
+    components/
+      FreePopup.svelte            ← Free tier UI
+      PremiumPopup.svelte         ← Premium tier UI
+    main.ts                       ← Mount point
+  background/
+    index.ts                      ← Service worker + ExtPay
+  lib/
+    colors.ts                     ← HEX ↔ RGB ↔ HSL conversion
+    storage.ts                    ← chrome.storage.local wrapper
 public/
-  manifest.json           ← Manifest V3
-  icons/                  ← Extension icons
-popup.html                ← Popup entry point
+  manifest.json                   ← Manifest V3 + ExtPay config
+  icons/                          ← Extension icons
+popup.html                        ← Popup entry point
+vite.config.ts                    ← Build + ExtPay.js copy plugin
 ```
+
+## ExtPay Integration
+
+Premium features use [ExtensionPay](https://extensionpay.com). Premium status is cached in `chrome.storage.local` for instant popup loading.
