@@ -79,3 +79,44 @@ export function luminance(hex: string): number {
   const { r, g, b } = hexToRgb(hex);
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 }
+
+/** Returns relative luminance (WCAG formula) 0-1 for contrast calculations */
+export function relativeLuminance(hex: string): number {
+  const { r, g, b } = hexToRgb(hex);
+  const [rs, gs, bs] = [r, g, b].map((c) => {
+    const sRGB = c / 255;
+    return sRGB <= 0.03928
+      ? sRGB / 12.92
+      : Math.pow((sRGB + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+}
+
+/** Returns WCAG contrast ratio between two colors (1-21) */
+export function contrastRatio(hex1: string, hex2: string): number {
+  const l1 = relativeLuminance(hex1);
+  const l2 = relativeLuminance(hex2);
+  const lighter = Math.max(l1, l2);
+  const darker = Math.min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+export interface WCAGCompliance {
+  ratio: number;
+  aaLarge: boolean; // 3:1
+  aaaLarge: boolean; // 4.5:1
+  aaNormal: boolean; // 4.5:1
+  aaaNormal: boolean; // 7:1
+}
+
+/** Returns WCAG compliance info for two colors */
+export function checkContrast(hex1: string, hex2: string): WCAGCompliance {
+  const ratio = contrastRatio(hex1, hex2);
+  return {
+    ratio,
+    aaLarge: ratio >= 3,
+    aaaLarge: ratio >= 4.5,
+    aaNormal: ratio >= 4.5,
+    aaaNormal: ratio >= 7,
+  };
+}

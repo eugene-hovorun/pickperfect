@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { formatColor, luminance, type ColorFormat } from '../../lib/colors';
+  import { formatColor, type ColorFormat } from '../lib/colors';
+  import { hasEyeDropper, formats, pickColorFromScreen, copyToClipboard as copyText } from '../lib/useColorPicker';
   import {
     getHistory,
     addToHistory,
@@ -8,9 +9,13 @@
     getFormat,
     setFormat,
     type ColorEntry,
-  } from '../../lib/storage';
+  } from '../lib/storage';
+  import ColorSwatch from './components/ColorSwatch.svelte';
+  import FormatPills from './components/FormatPills.svelte';
+  import HistoryGrid from './components/HistoryGrid.svelte';
+  import ContrastChecker from './components/ContrastChecker.svelte';
 
-  // --- State ---
+  // State
   let currentColor = $state<string | null>(null);
   let history = $state<ColorEntry[]>([]);
   let format = $state<ColorFormat>('hex');
@@ -18,13 +23,11 @@
   let picking = $state(false);
   let error = $state<string | null>(null);
 
-  const hasEyeDropper = 'EyeDropper' in window;
-  const formats: ColorFormat[] = ['hex', 'rgb', 'hsl'];
+  // Contrast checker state
+  let compareMode = $state(false);
+  let selectedColors = $state<string[]>([]);
 
-  let displayValue = $derived(currentColor ? formatColor(currentColor, format) : '');
-  let textOnSwatch = $derived(currentColor && luminance(currentColor) > 0.6 ? '#1D1D1F' : '#FFFFFF');
-
-  // --- Init ---
+  // Initialize
   $effect(() => {
     (async () => {
       history = await getHistory();
@@ -38,28 +41,16 @@
     })();
   });
 
-  // --- Actions ---
+  // Actions
   async function pickColor() {
     if (!hasEyeDropper || picking) return;
     picking = true;
     error = null;
     try {
-      // @ts-ignore - EyeDropper API types not in default lib
-      const dropper = new EyeDropper();
-      const result = await dropper.open();
-      const raw = result.sRGBHex;
-      let hex: string;
-      if (raw.startsWith('#')) {
-        hex = raw.slice(0, 7).toUpperCase();
-      } else {
-        // Parse RGBA(r, g, b, a) or RGB(r, g, b)
-        const nums = raw.match(/[\d.]+/g)?.map(Number) ?? [];
-        const [r = 0, g = 0, b = 0] = nums;
-        hex = `#${[r, g, b].map((c) => Math.round(c).toString(16).padStart(2, '0')).join('')}`.toUpperCase();
-      }
+      const hex = await pickColorFromScreen();
       currentColor = hex;
       history = await addToHistory(hex);
-      await copyToClipboard(hex);
+      await handleCopy(formatColor(hex, format));
     } catch (e: any) {
       if (e?.name !== 'AbortError') {
         error = 'Failed to pick color';
@@ -69,35 +60,17 @@
     }
   }
 
-  async function copyToClipboard(hex?: string) {
-    const value = hex ? formatColor(hex, format) : displayValue;
-    if (!value) return;
-    try {
-      await navigator.clipboard.writeText(value);
-      copied = true;
-      setTimeout(() => (copied = false), 1200);
-    } catch {
-      // Fallback for clipboard API failure
-      const ta = document.createElement('textarea');
-      ta.value = value;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      copied = true;
-      setTimeout(() => (copied = false), 1200);
-    }
+  async function handleCopy(value: string) {
+    await copyText(value);
+    copied = true;
+    setTimeout(() => (copied = false), 1200);
   }
 
   async function selectFromHistory(hex: string) {
     currentColor = hex;
-    await copyToClipboard(hex);
   }
 
-  async function handleRemove(e: MouseEvent, hex: string) {
-    e.preventDefault();
+  async function handleRemove(hex: string) {
     history = await removeFromHistory(hex);
     if (currentColor === hex) {
       currentColor = history.length > 0 ? history[0].hex : null;
@@ -114,6 +87,33 @@
     format = f;
     await setFormat(f);
   }
+
+  // Compare mode functions
+  function toggleCompareMode() {
+    compareMode = !compareMode;
+    selectedColors = [];
+  }
+
+  function handleHistoryClick(hex: string) {
+    if (!compareMode) {
+      selectFromHistory(hex);
+      return;
+    }
+
+    // In compare mode: select up to 2 colors
+    if (selectedColors.includes(hex)) {
+      selectedColors = selectedColors.filter(c => c !== hex);
+    } else if (selectedColors.length < 2) {
+      selectedColors = [...selectedColors, hex];
+    } else {
+      // Replace first color
+      selectedColors = [selectedColors[1], hex];
+    }
+  }
+
+  function isSelected(hex: string): boolean {
+    return compareMode && selectedColors.includes(hex);
+  }
 </script>
 
 <main>
@@ -122,18 +122,13 @@
     <div class="logo">
       <img src="./icons/icon-48.png" alt="" width="18" height="18" />
       <span>PickPerfect</span>
+      <span class="premium-badge">✨ PREMIUM</span>
     </div>
-    <div class="format-pills">
-      {#each formats as f}
-        <button
-          class="pill"
-          class:active={format === f}
-          onclick={() => switchFormat(f)}
-        >
-          {f.toUpperCase()}
-        </button>
-      {/each}
-    </div>
+    <FormatPills 
+      formats={formats} 
+      current={format} 
+      onswitch={switchFormat} 
+    />
   </header>
 
   <!-- Pick Button -->
@@ -153,28 +148,13 @@
   {/if}
 
   <!-- Color Preview -->
-  {#if currentColor}
-    <button
-      class="swatch-card"
-      style="background-color: {currentColor};"
-      onclick={() => copyToClipboard()}
-      title="Click to copy"
-    >
-      <span class="swatch-value" style="color: {textOnSwatch};">
-        {#if copied}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-          Copied!
-        {:else}
-          {displayValue}
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon">
-            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-          </svg>
-        {/if}
-      </span>
-    </button>
+  {#if currentColor && !compareMode}
+    <ColorSwatch
+      color={currentColor}
+      format={format}
+      copied={copied}
+      oncopy={() => handleCopy(formatColor(currentColor!, format))}
+    />
   {/if}
 
   <!-- Error -->
@@ -182,25 +162,46 @@
     <div class="error-banner">{error}</div>
   {/if}
 
-  <!-- History -->
+  <!-- Contrast Checker -->
+  {#if compareMode && selectedColors.length === 2}
+    <ContrastChecker color1={selectedColors[0]} color2={selectedColors[1]} />
+  {/if}
+
+  <!-- History with Compare Toggle -->
   {#if history.length > 0}
     <section class="history">
       <div class="history-header">
         <span class="label">HISTORY</span>
-        <button class="clear-btn" onclick={handleClearHistory}>Clear</button>
+        <div class="header-actions">
+          <button 
+            class="compare-btn" 
+            class:active={compareMode}
+            onclick={toggleCompareMode}
+            title="Compare two colors"
+          >
+            {compareMode ? 'Cancel' : 'Compare'}
+          </button>
+          <button class="clear-btn" onclick={handleClearHistory}>Clear</button>
+        </div>
       </div>
       <div class="history-grid">
         {#each history as entry (entry.hex)}
           <button
             class="history-swatch"
-            class:selected={currentColor === entry.hex}
+            class:selected={!compareMode && currentColor === entry.hex}
+            class:compare-selected={isSelected(entry.hex)}
             style="background-color: {entry.hex};"
-            onclick={() => selectFromHistory(entry.hex)}
-            oncontextmenu={(e) => handleRemove(e, entry.hex)}
-            title="{entry.hex} — right-click to remove"
+            onclick={() => handleHistoryClick(entry.hex)}
+            oncontextmenu={(e) => { if (!compareMode) { e.preventDefault(); handleRemove(entry.hex); } }}
+            title={compareMode 
+              ? `Select for comparison (${selectedColors.length}/2)` 
+              : `${entry.hex} — right-click to remove`}
           ></button>
         {/each}
       </div>
+      {#if compareMode}
+        <p class="compare-hint">Select two colors to compare their contrast ratio</p>
+      {/if}
     </section>
   {/if}
 
@@ -228,6 +229,7 @@
     --accent: #0071E3;
     --accent-hover: #0077ED;
     --success: #34C759;
+    --premium: #FFD700;
 
     padding: 16px;
     display: flex;
@@ -235,7 +237,6 @@
     gap: 12px;
   }
 
-  /* Header */
   header {
     display: flex;
     align-items: center;
@@ -251,38 +252,17 @@
     color: var(--text);
   }
 
-  .format-pills {
-    display: flex;
-    gap: 2px;
-    background: var(--bg-subtle);
-    border-radius: 8px;
-    padding: 2px;
+  .premium-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #1D1D1F;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    margin-left: 4px;
   }
 
-  .pill {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 4px 10px;
-    border: none;
-    border-radius: 6px;
-    background: transparent;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    letter-spacing: 0.3px;
-  }
-
-  .pill:hover {
-    color: var(--text);
-  }
-
-  .pill.active {
-    background: #FFFFFF;
-    color: var(--text);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  }
-
-  /* Pick Button */
   .pick-btn {
     display: flex;
     align-items: center;
@@ -319,50 +299,16 @@
     stroke: #FFFFFF;
   }
 
-  /* Swatch Card */
-  .swatch-card {
-    width: 100%;
-    height: 80px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    position: relative;
-    font-family: inherit;
+  .error-banner {
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #FF3B30;
+    background: rgba(255, 59, 48, 0.08);
+    border-radius: 8px;
+    text-align: center;
   }
 
-  .swatch-card:hover {
-    transform: translateY(-0.5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .swatch-card:active {
-    transform: translateY(0);
-  }
-
-  .swatch-value {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-
-  .copy-icon {
-    opacity: 0;
-    transition: opacity 0.15s ease;
-  }
-
-  .swatch-card:hover .copy-icon {
-    opacity: 0.7;
-  }
-
-  /* History */
+  /* History with Compare Mode */
   .history {
     display: flex;
     flex-direction: column;
@@ -380,6 +326,34 @@
     font-weight: 500;
     color: var(--text-secondary);
     letter-spacing: 0.5px;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .compare-btn {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: none;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+  }
+
+  .compare-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .compare-btn.active {
+    color: #FFFFFF;
+    background: var(--accent);
+    border-color: var(--accent);
   }
 
   .clear-btn {
@@ -425,17 +399,18 @@
     box-shadow: 0 0 0 2px var(--accent);
   }
 
-  /* Error Banner */
-  .error-banner {
-    padding: 10px 12px;
-    font-size: 12px;
-    color: #FF3B30;
-    background: rgba(255, 59, 48, 0.08);
-    border-radius: 8px;
-    text-align: center;
+  .history-swatch.compare-selected {
+    border-color: var(--premium);
+    box-shadow: 0 0 0 2px var(--premium);
   }
 
-  /* Empty State */
+  .compare-hint {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-align: center;
+    margin: 0;
+  }
+
   .empty {
     display: flex;
     flex-direction: column;
@@ -459,7 +434,6 @@
     font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
   }
 
-  /* Footer */
   footer {
     display: flex;
     justify-content: center;
