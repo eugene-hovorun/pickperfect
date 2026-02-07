@@ -14,6 +14,7 @@
   import FormatPills from './components/FormatPills.svelte';
   import ContrastChecker from './components/ContrastChecker.svelte';
   import TailwindMatch from './components/TailwindMatch.svelte';
+  import PaletteExtractor from './components/PaletteExtractor.svelte';
 
   // State
   let currentColor = $state<string | null>(null);
@@ -114,6 +115,12 @@
   function isSelected(hex: string): boolean {
     return compareMode && selectedColors.includes(hex);
   }
+
+  async function handlePaletteColorSelect(hex: string) {
+    currentColor = hex;
+    history = await addToHistory(hex);
+    await handleCopy(formatColor(hex, format));
+  }
 </script>
 
 <main>
@@ -160,6 +167,11 @@
   <!-- Tailwind Match -->
   {#if currentColor && !compareMode}
     <TailwindMatch color={currentColor} />
+  {/if}
+
+  <!-- Palette Extractor -->
+  {#if !compareMode}
+    <PaletteExtractor oncolorselect={handlePaletteColorSelect} />
   {/if}
 
   <!-- Error -->
