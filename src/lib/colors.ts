@@ -120,3 +120,42 @@ export function checkContrast(hex1: string, hex2: string): WCAGCompliance {
     aaaNormal: ratio >= 7,
   };
 }
+
+/** Calculate Euclidean distance between two colors in RGB space */
+export function colorDistance(hex1: string, hex2: string): number {
+  const rgb1 = hexToRgb(hex1);
+  const rgb2 = hexToRgb(hex2);
+  const dr = rgb1.r - rgb2.r;
+  const dg = rgb1.g - rgb2.g;
+  const db = rgb1.b - rgb2.b;
+  return Math.sqrt(dr * dr + dg * dg + db * db);
+}
+
+export interface NearestColor {
+  name: string;
+  hex: string;
+  distance: number;
+}
+
+/** Find the nearest color from a list of named colors */
+export function findNearestColor(
+  targetHex: string,
+  colorList: Array<{ name: string; hex: string }>,
+): NearestColor {
+  let nearest = colorList[0];
+  let minDistance = colorDistance(targetHex, nearest.hex);
+
+  for (let i = 1; i < colorList.length; i++) {
+    const dist = colorDistance(targetHex, colorList[i].hex);
+    if (dist < minDistance) {
+      minDistance = dist;
+      nearest = colorList[i];
+    }
+  }
+
+  return {
+    name: nearest.name,
+    hex: nearest.hex,
+    distance: minDistance,
+  };
+}

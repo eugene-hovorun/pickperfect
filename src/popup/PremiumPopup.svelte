@@ -12,8 +12,8 @@
   } from '../lib/storage';
   import ColorSwatch from './components/ColorSwatch.svelte';
   import FormatPills from './components/FormatPills.svelte';
-  import HistoryGrid from './components/HistoryGrid.svelte';
   import ContrastChecker from './components/ContrastChecker.svelte';
+  import TailwindMatch from './components/TailwindMatch.svelte';
 
   // State
   let currentColor = $state<string | null>(null);
@@ -155,6 +155,11 @@
       copied={copied}
       oncopy={() => handleCopy(formatColor(currentColor!, format))}
     />
+  {/if}
+
+  <!-- Tailwind Match -->
+  {#if currentColor && !compareMode}
+    <TailwindMatch color={currentColor} />
   {/if}
 
   <!-- Error -->
