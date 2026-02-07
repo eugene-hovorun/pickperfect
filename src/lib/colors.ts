@@ -1,4 +1,4 @@
-export type ColorFormat = 'hex' | 'rgb' | 'hsl';
+export type ColorFormat = "hex" | "rgb" | "hsl";
 
 export interface RGB {
   r: number;
@@ -13,7 +13,7 @@ export interface HSL {
 }
 
 export function hexToRgb(hex: string): RGB {
-  const clean = hex.replace('#', '');
+  const clean = hex.replace("#", "");
   if (clean.length < 6 || !/^[0-9A-Fa-f]+$/.test(clean)) {
     return { r: 0, g: 0, b: 0 };
   }
@@ -60,13 +60,13 @@ export function rgbToHsl(r: number, g: number, b: number): HSL {
 export function formatColor(hex: string, format: ColorFormat): string {
   const upper = hex.toUpperCase();
   switch (format) {
-    case 'hex':
+    case "hex":
       return upper;
-    case 'rgb': {
+    case "rgb": {
       const { r, g, b } = hexToRgb(hex);
       return `rgb(${r}, ${g}, ${b})`;
     }
-    case 'hsl': {
+    case "hsl": {
       const { r, g, b } = hexToRgb(hex);
       const { h, s, l } = rgbToHsl(r, g, b);
       return `hsl(${h}, ${s}%, ${l}%)`;

@@ -60,16 +60,16 @@ We analyzed the top 5 color picker extensions and their reviews. Here are the re
 - **Theme:** Light only (neutral backdrop makes picked colors pop)
 - **Philosophy:** UI should feel invisible — showcase user's colors, not its own
 
-| Token              | Value     | Usage                      |
-| ------------------ | --------- | -------------------------- |
-| `--bg`             | `#FFFFFF` | Main background            |
-| `--bg-subtle`      | `#F5F5F7` | Cards, history, sections   |
-| `--border`         | `#E5E5EA` | Dividers, input borders    |
-| `--text`           | `#1D1D1F` | Primary text               |
-| `--text-secondary` | `#86868B` | Labels, hints              |
-| `--accent`         | `#0071E3` | Buttons, active states     |
-| `--accent-hover`   | `#0077ED` | Button hover               |
-| `--success`        | `#34C759` | "Copied!" feedback         |
+| Token              | Value     | Usage                    |
+| ------------------ | --------- | ------------------------ |
+| `--bg`             | `#FFFFFF` | Main background          |
+| `--bg-subtle`      | `#F5F5F7` | Cards, history, sections |
+| `--border`         | `#E5E5EA` | Dividers, input borders  |
+| `--text`           | `#1D1D1F` | Primary text             |
+| `--text-secondary` | `#86868B` | Labels, hints            |
+| `--accent`         | `#0071E3` | Buttons, active states   |
+| `--accent-hover`   | `#0077ED` | Button hover             |
+| `--success`        | `#34C759` | "Copied!" feedback       |
 
 - **Typography:** System font stack (`-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif`)
 - **Spacing:** 4px base grid
@@ -149,7 +149,6 @@ pickperfect/
     icons/                  ← 16, 48, 128px PNGs
   icon-source.svg           ← Source icon for regeneration
   popup.html                ← Popup entry point
-  preview.html              ← Standalone UI preview (not shipped)
   vite.config.ts
   package.json
   .gitignore

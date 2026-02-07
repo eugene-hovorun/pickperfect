@@ -1,23 +1,23 @@
-import { defineConfig } from 'vite';
-import { svelte } from '@sveltejs/vite-plugin-svelte';
-import { resolve } from 'path';
+import { defineConfig } from "vite";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { resolve } from "path";
 
 export default defineConfig({
   plugins: [svelte()],
-  base: './',
+  base: "./",
   build: {
-    outDir: 'dist',
+    outDir: "dist",
     emptyOutDir: true,
-    target: 'esnext',
+    target: "esnext",
     rollupOptions: {
       input: {
-        popup: resolve(__dirname, 'popup.html'),
-        background: resolve(__dirname, 'src/background/index.ts'),
+        popup: resolve(__dirname, "popup.html"),
+        background: resolve(__dirname, "src/background/index.ts"),
       },
       output: {
-        entryFileNames: '[name].js',
-        chunkFileNames: 'chunks/[name]-[hash].js',
-        assetFileNames: 'assets/[name].[ext]',
+        entryFileNames: "[name].js",
+        chunkFileNames: "chunks/[name]-[hash].js",
+        assetFileNames: "assets/[name].[ext]",
       },
     },
   },

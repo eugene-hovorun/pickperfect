@@ -3,5 +3,5 @@
 // This service worker handles any future background tasks (context menus, badge, etc.)
 
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('PickPerfect installed');
+  console.log("PickPerfect installed");
 });
