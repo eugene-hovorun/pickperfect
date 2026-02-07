@@ -5,6 +5,7 @@
   "version": "1.0.0",
   "description": "Pick colors from any screen pixel. Copy as HEX, RGB, HSL instantly. Zero bloat, zero tracking, zero DOM injection.",
   "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["https://extensionpay.com/*"],
   "action": {
     "default_popup": "popup.html",
     "default_title": "PickPerfect — Pick a color"
