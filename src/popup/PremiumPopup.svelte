@@ -273,7 +273,7 @@
     font-size: 9px;
     font-weight: 700;
     padding: 2px 6px;
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    background: linear-gradient(135deg, #ffd90083 0%, #ffa60083 100%);
     color: #1D1D1F;
     border-radius: 4px;
     letter-spacing: 0.5px;

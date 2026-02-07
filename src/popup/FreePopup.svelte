@@ -13,6 +13,7 @@
   import ColorSwatch from './components/ColorSwatch.svelte';
   import FormatPills from './components/FormatPills.svelte';
   import HistoryGrid from './components/HistoryGrid.svelte';
+  import ExtPay from 'extpay';
 
   // State
   let currentColor = $state<string | null>(null);
@@ -82,6 +83,11 @@
     format = f;
     await setFormat(f);
   }
+
+  function openUpgrade() {
+    const extpay = ExtPay('pickperfect');
+    extpay.openPaymentPage();
+  }
 </script>
 
 <main>
@@ -137,6 +143,37 @@
     onremove={handleRemove}
     onclear={handleClearHistory}
   />
+
+  <!-- Upgrade CTA -->
+  <section class="upgrade-cta">
+    <div class="upgrade-header">
+      <span class="premium-badge">✨ Premium</span>
+      <span class="price">pay $2.99 once</span>
+    </div>
+    <ul class="premium-features">
+      <li>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>WCAG Contrast Checker</span>
+      </li>
+      <li>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>Tailwind Color Mapping</span>
+      </li>
+      <li>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>Page Palette Extraction</span>
+      </li>
+    </ul>
+    <button class="upgrade-btn" onclick={openUpgrade}>
+      Upgrade to Premium
+    </button>
+  </section>
 
   <!-- Empty State -->
   {#if !currentColor && history.length === 0}
@@ -262,5 +299,80 @@
     font-size: 10px;
     color: var(--text-secondary);
     opacity: 0.6;
+  }
+
+  /* Upgrade CTA */
+  .upgrade-cta {
+    background: linear-gradient(135deg, #F5F5F7 0%, #FFFFFF 100%);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .upgrade-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .premium-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 8px;
+    background: linear-gradient(135deg, #ffd90083 0%, #ffa60083 100%);
+    color: #1D1D1F;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+  }
+
+  .price {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .premium-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .premium-features li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  .premium-features svg {
+    flex-shrink: 0;
+    stroke: #34C759;
+  }
+
+  .upgrade-btn {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #0071E3 0%, #005BB5 100%);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .upgrade-btn:hover {
+    transform: translateY(-0.5px);
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+  }
+
+  .upgrade-btn:active {
+    transform: translateY(0);
   }
 </style>
