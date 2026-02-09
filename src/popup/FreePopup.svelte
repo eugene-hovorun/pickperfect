@@ -16,6 +16,8 @@
   import HistoryGrid from './components/HistoryGrid.svelte';
   import ExtPay from 'extpay';
 
+  type Tab = 'color' | 'tailwind' | 'compare' | 'palette';
+
   // State
   let currentColor = $state<string | null>(null);
   let history = $state<ColorEntry[]>([]);
@@ -23,6 +25,7 @@
   let copied = $state(false);
   let picking = $state(false);
   let error = $state<string | null>(null);
+  let activeTab = $state<Tab>('color');
 
   // Initialize
   $effect(() => {
@@ -48,6 +51,7 @@
       currentColor = hex;
       history = await addToHistory(hex);
       await handleCopy(formatColor(hex, format));
+      activeTab = 'color'; // Switch to color tab after picking
     } catch (e: any) {
       if (e?.name !== 'AbortError') {
         error = 'Failed to pick color';
@@ -91,9 +95,9 @@
   }
 </script>
 
-<main class="p-4 flex flex-col gap-3">
-  <!-- Header -->
-  <header class="flex items-center justify-between">
+<main class="flex flex-col h-full">
+  <!-- Header (always visible) -->
+  <header class="flex items-center justify-between p-4 pb-3">
     <div class="flex items-center gap-1.5 text-sm font-semibold text-foreground">
       <img src="./icons/icon-48.png" alt="" width="18" height="18" />
       <span>PickPerfect</span>
@@ -105,111 +109,192 @@
     />
   </header>
 
-  <!-- Pick Button -->
-  {#if hasEyeDropper}
+  <!-- Pick Button (always visible) -->
+  <div class="px-4 pb-3">
+    {#if hasEyeDropper}
+      <button 
+        class={cn(
+          "flex items-center justify-center gap-2 w-full py-3 px-4",
+          "text-sm font-semibold text-primary-foreground rounded-xl transition-all",
+          "bg-primary hover:bg-primary/90",
+          picking 
+            ? "opacity-70 cursor-wait" 
+            : "hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30 active:translate-y-0"
+        )}
+        onclick={pickColor} 
+        disabled={picking}
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-white">
+          <path d="m2 22 1-1h3l9-9" />
+          <path d="M3 21v-3l9-9" />
+          <path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3L15 6" />
+        </svg>
+        {picking ? 'Picking…' : 'Pick a Color'}
+      </button>
+    {:else}
+      <div class="px-3 py-2.5 text-xs text-destructive bg-destructive/10 rounded-lg text-center">
+        EyeDropper API not available. Please use Chrome 95+.
+      </div>
+    {/if}
+
+    {#if error}
+      <div class="mt-2 px-3 py-2.5 text-xs text-destructive bg-destructive/10 rounded-lg text-center">
+        {error}
+      </div>
+    {/if}
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex border-b border-border px-4">
     <button 
       class={cn(
-        "flex items-center justify-center gap-2 w-full py-3 px-4",
-        "text-sm font-semibold text-primary-foreground rounded-xl transition-all",
-        "bg-primary hover:bg-primary/90",
-        picking 
-          ? "opacity-70 cursor-wait" 
-          : "hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30 active:translate-y-0"
+        "px-3 py-2 text-xs font-medium transition-colors relative",
+        activeTab === 'color' 
+          ? "text-foreground" 
+          : "text-muted-foreground hover:text-foreground"
       )}
-      onclick={pickColor} 
-      disabled={picking}
+      onclick={() => activeTab = 'color'}
     >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-white">
-        <path d="m2 22 1-1h3l9-9" />
-        <path d="M3 21v-3l9-9" />
-        <path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3L15 6" />
-      </svg>
-      {picking ? 'Picking…' : 'Pick a Color'}
+      Color
+      {#if activeTab === 'color'}
+        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+      {/if}
     </button>
-  {:else}
-    <div class="px-3 py-2.5 text-xs text-destructive bg-destructive/10 rounded-lg text-center">
-      EyeDropper API not available. Please use Chrome 95+.
-    </div>
-  {/if}
-
-  <!-- Color Preview -->
-  {#if currentColor}
-    <ColorSwatch
-      color={currentColor}
-      format={format}
-      copied={copied}
-      oncopy={() => handleCopy(formatColor(currentColor!, format))}
-    />
-  {/if}
-
-  <!-- Error -->
-  {#if error}
-    <div class="px-3 py-2.5 text-xs text-destructive bg-destructive/10 rounded-lg text-center">
-      {error}
-    </div>
-  {/if}
-
-  <!-- History -->
-  <HistoryGrid
-    history={history}
-    currentColor={currentColor}
-    onselect={selectFromHistory}
-    onremove={handleRemove}
-    onclear={handleClearHistory}
-  />
-
-  <!-- Upgrade CTA -->
-  <section class="bg-gradient-to-br from-muted to-background border-[1.5px] border-border rounded-xl p-3.5 flex flex-col gap-3">
-    <div class="flex items-center justify-between">
-      <span class="text-[11px] font-semibold px-2 py-1 bg-gradient-to-br from-amber-200/50 to-orange-200/50 text-foreground rounded-md tracking-wide">
-        ✨ Premium
-      </span>
-      <span class="text-sm font-bold text-foreground">
-        pay $2.99 once
-      </span>
-    </div>
-    
-    <ul class="list-none flex flex-col gap-2">
-      <li class="flex items-center gap-2 text-xs text-foreground">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="flex-shrink-0 stroke-green-600">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        <span>WCAG Contrast Checker</span>
-      </li>
-      <li class="flex items-center gap-2 text-xs text-foreground">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="flex-shrink-0 stroke-green-600">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        <span>Tailwind Color Mapping</span>
-      </li>
-      <li class="flex items-center gap-2 text-xs text-foreground">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="flex-shrink-0 stroke-green-600">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-        <span>Page Palette Extraction</span>
-      </li>
-    </ul>
-    
     <button 
-      class="w-full py-2.5 px-3.5 text-sm font-semibold text-white bg-gradient-to-br from-primary to-blue-700 rounded-lg transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30 active:translate-y-0"
-      onclick={openUpgrade}
+      class={cn(
+        "px-3 py-2 text-xs font-medium transition-colors relative",
+        activeTab === 'tailwind' 
+          ? "text-foreground" 
+          : "text-muted-foreground hover:text-foreground"
+      )}
+      onclick={() => activeTab = 'tailwind'}
     >
-      Upgrade to Premium
+      Tailwind
+      {#if activeTab === 'tailwind'}
+        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+      {/if}
     </button>
-  </section>
+    <button 
+      class={cn(
+        "px-3 py-2 text-xs font-medium transition-colors relative",
+        activeTab === 'compare' 
+          ? "text-foreground" 
+          : "text-muted-foreground hover:text-foreground"
+      )}
+      onclick={() => activeTab = 'compare'}
+    >
+      Compare
+      {#if activeTab === 'compare'}
+        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+      {/if}
+    </button>
+    <button 
+      class={cn(
+        "px-3 py-2 text-xs font-medium transition-colors relative",
+        activeTab === 'palette' 
+          ? "text-foreground" 
+          : "text-muted-foreground hover:text-foreground"
+      )}
+      onclick={() => activeTab = 'palette'}
+    >
+      Palette
+      {#if activeTab === 'palette'}
+        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+      {/if}
+    </button>
+  </div>
 
-  <!-- Empty State -->
-  {#if !currentColor && history.length === 0}
-    <div class="flex flex-col items-center gap-2 py-6 px-4 text-muted-foreground">
-      <p class="text-sm m-0">Pick your first color to get started</p>
-      <span class="text-[11px] font-medium px-2 py-0.5 bg-muted rounded font-mono text-muted-foreground">
-        Ctrl + Shift + C
-      </span>
-    </div>
-  {/if}
+  <!-- Tab Content (scrollable) -->
+  <div class="flex-1 overflow-y-auto p-4 pt-3" style="max-height: 400px;">
+    {#if activeTab === 'color'}
+      <div class="flex flex-col gap-3">
+        {#if currentColor}
+          <ColorSwatch
+            color={currentColor}
+            format={format}
+            copied={copied}
+            oncopy={() => handleCopy(formatColor(currentColor!, format))}
+          />
+        {/if}
+
+        <HistoryGrid
+          history={history}
+          currentColor={currentColor}
+          onselect={selectFromHistory}
+          onremove={handleRemove}
+          onclear={handleClearHistory}
+        />
+
+        {#if !currentColor && history.length === 0}
+          <div class="flex flex-col items-center gap-2 py-12 text-muted-foreground">
+            <p class="text-sm m-0">Pick your first color to get started</p>
+            <span class="text-[11px] font-medium px-2 py-0.5 bg-muted rounded font-mono text-muted-foreground">
+              Ctrl + Shift + C
+            </span>
+          </div>
+        {/if}
+      </div>
+    {:else}
+      <!-- Upgrade Prompt for Premium Features -->
+      <div class="flex flex-col items-center gap-4 py-8 px-4">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-200/50 to-orange-200/50 flex items-center justify-center text-2xl">
+          {#if activeTab === 'tailwind'}
+            🎨
+          {:else if activeTab === 'compare'}
+            ⚖️
+          {:else if activeTab === 'palette'}
+            🌈
+          {/if}
+        </div>
+        
+        <div class="text-center">
+          <h3 class="text-sm font-semibold text-foreground mb-1">
+            {#if activeTab === 'tailwind'}
+              Tailwind Color Mapping
+            {:else if activeTab === 'compare'}
+              WCAG Contrast Checker
+            {:else if activeTab === 'palette'}
+              Page Palette Extraction
+            {/if}
+          </h3>
+          <p class="text-xs text-muted-foreground">
+            {#if activeTab === 'tailwind'}
+              Find the nearest Tailwind CSS color instantly with match accuracy.
+            {:else if activeTab === 'compare'}
+              Compare two colors for accessibility compliance (AA/AAA).
+            {:else if activeTab === 'palette'}
+              Extract all colors from any webpage with one click.
+            {/if}
+          </p>
+        </div>
+
+        <div class="w-full bg-muted/50 rounded-lg p-3 border border-border">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-semibold px-2 py-1 bg-gradient-to-br from-amber-200/50 to-orange-200/50 text-foreground rounded-md tracking-wide">
+              ✨ Premium
+            </span>
+            <span class="text-sm font-bold text-foreground">
+              $2.99 once
+            </span>
+          </div>
+          <button 
+            class="w-full py-2.5 px-3.5 text-sm font-semibold text-white bg-gradient-to-br from-primary to-blue-700 rounded-lg transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30 active:translate-y-0"
+            onclick={openUpgrade}
+          >
+            Upgrade to Premium
+          </button>
+        </div>
+
+        <div class="text-center space-y-1">
+          <p class="text-[10px] text-muted-foreground">All 3 premium features included:</p>
+          <p class="text-[10px] text-muted-foreground">Tailwind • Compare • Palette</p>
+        </div>
+      </div>
+    {/if}
+  </div>
 
   <!-- Footer -->
-  <footer class="flex justify-center pt-1">
+  <footer class="flex justify-center py-2 border-t border-border">
     <span class="text-[10px] text-muted-foreground opacity-60">
       Ctrl+Shift+C to open
     </span>
