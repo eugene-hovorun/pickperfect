@@ -13,6 +13,11 @@ export default defineConfig({
       },
     },
   ],
+  resolve: {
+    alias: {
+      $lib: resolve(__dirname, "./src/lib"),
+    },
+  },
   base: "./",
   build: {
     outDir: "dist",

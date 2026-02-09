@@ -38,7 +38,7 @@ We analyzed the top 5 color picker extensions and their reviews. Here are the re
 
 - ✅ Uses native `EyeDropper` API — zero DOM injection, can't break other apps
 - ✅ Clipboard that actually works, every time
-- ✅ Clean modern UI (CSS Peeper level quality)
+- ✅ Clean modern UI (CSS Peeper level quality) with shadcn-svelte
 - ✅ Minimal permissions, transparent privacy
 - ✅ **WCAG contrast checker** — compare colors for accessibility (premium)
 - ✅ **Tailwind color mapping** — find nearest Tailwind color instantly (premium)
@@ -49,8 +49,9 @@ We analyzed the top 5 color picker extensions and their reviews. Here are the re
 ## Technical Stack
 
 - **Svelte 5** with runes (reactivity via `$state`, `$derived`, `$effect`)
+- **shadcn-svelte** for UI components (Tailwind CSS + bits-ui)
 - **Vite 6** with multi-entry build (popup + background)
-- **TypeScript**
+- **TypeScript** with path aliases (`$lib/*`)
 - **Chrome Manifest V3**
 - **Native `EyeDropper` API** (Chrome 95+)
 - **ExtensionPay** for payment processing
@@ -65,7 +66,7 @@ We analyzed the top 5 color picker extensions and their reviews. Here are the re
 - ✅ One-click copy in HEX, RGB, HSL (format persisted)
 - ✅ Color history (up to 20 colors, persisted)
 - ✅ Keyboard shortcut to open popup (`Ctrl+Shift+C`)
-- ✅ Clean, modern popup UI
+- ✅ Clean, modern popup UI with shadcn-svelte
 - ✅ Zero content scripts, zero DOM injection
 - ✅ Minimal permissions
 
@@ -101,40 +102,102 @@ We analyzed the top 5 color picker extensions and their reviews. Here are the re
 
 ## Architecture
 
-### File Structure (Current - Complete)
+### Design Philosophy: Maintainability + Small Bundle
+
+We balance **maintainability** (easy to read, change, extend) with **code size** (small bundle, fast load):
+
+#### What We Optimize For:
+
+1. **Readable over clever** - Explicit is better than implicit
+2. **Composable over monolithic** - Small, focused components
+3. **Utility CSS over custom CSS** - shadcn-svelte + Tailwind = ~60% less CSS
+4. **Type-safe over loose** - TypeScript everywhere, path aliases for clean imports
+5. **Small bundle over feature bloat** - Only ship what users need
+
+#### Trade-offs We Make:
+
+- **Use shadcn-svelte** - Copy components into our codebase (no runtime lib), only ship what we use
+- **Inline small utilities** - If it's <10 lines, inline it instead of creating a file
+- **Shared components** - Reuse `Button`, `Card`, `Badge` across features instead of custom CSS per component
+- **Tree-shakeable** - Tailwind purges unused CSS, Vite tree-shakes unused JS
+
+### File Structure (Current - In Migration to shadcn-svelte)
 
 ```
 src/
-  lib/
-    colors.ts              (200 lines) - Color math + WCAG contrast + distance
-    storage.ts             (60 lines)  - chrome.storage wrapper
-    useColorPicker.ts      (45 lines)  - Shared utilities
-    tailwind.ts            (280 lines) - All Tailwind v3.4 colors
-    paletteExtractor.ts    (170 lines) - On-demand extraction
+  app.css                    - Tailwind directives + shadcn theme variables
 
-  popup/
-    App.svelte             (80 lines)  - Routing + premium check
-    FreePopup.svelte       (185 lines) - Free tier UI
-    PremiumPopup.svelte    (230 lines) - Premium tier UI
-    main.ts                (3 lines)   - Entry point
+  lib/
+    colors.ts                (200 lines) - Color math + WCAG contrast + distance
+    storage.ts               (60 lines)  - chrome.storage wrapper
+    useColorPicker.ts        (45 lines)  - Shared utilities
+    tailwind.ts              (280 lines) - All Tailwind v3.4 colors
+    paletteExtractor.ts      (170 lines) - On-demand extraction
+    utils.ts                 (6 lines)   - cn() helper for class merging
 
     components/
-      ColorSwatch.svelte   (80 lines)  - Preview card
-      FormatPills.svelte   (50 lines)  - Format switcher
-      HistoryGrid.svelte   (85 lines)  - Color history
-      ContrastChecker.svelte (125 lines) - WCAG checker ✅
-      TailwindMatch.svelte (120 lines) - Tailwind mapping ✅
-      PaletteExtractor.svelte (200 lines) - Palette extraction ✅
+      ui/                    - shadcn-svelte components (as needed)
+        button.svelte
+        card.svelte
+        badge.svelte
+        separator.svelte
+        ... (add only what you use)
+
+  popup/
+    App.svelte               (80 lines)  - Routing + premium check
+    FreePopup.svelte         (185 lines) - Free tier UI
+    PremiumPopup.svelte      (230 lines) - Premium tier UI
+    main.ts                  (4 lines)   - Entry point + CSS import
+
+    components/
+      ColorSwatch.svelte     (80 lines)  - Preview card
+      FormatPills.svelte     (28 lines)  - Format switcher ✅ MIGRATED
+      HistoryGrid.svelte     (85 lines)  - Color history
+      ContrastChecker.svelte (125 lines) - WCAG checker
+      TailwindMatch.svelte   (120 lines) - Tailwind mapping
+      PaletteExtractor.svelte (200 lines) - Palette extraction
 
   background/
-    index.ts               - Service worker + ExtPay integration
+    index.ts                 - Service worker + ExtPay integration
 
 public/
-  manifest.json            - Manifest V3 + permissions
-  icons/                   - 16, 48, 128px PNGs
+  manifest.json              - Manifest V3 + permissions
+  icons/                     - 16, 48, 128px PNGs
+
+Config files:
+  tailwind.config.js         - Tailwind + shadcn theme
+  postcss.config.js          - PostCSS for Tailwind
+  components.json            - shadcn-svelte CLI config
+  tsconfig.json              - TypeScript + path aliases
+  vite.config.ts             - Vite + aliases + ExtPay copy
 ```
 
-**Total source lines:** ~1,100 (clean, maintainable)
+**Current stats:**
+
+- **Total source lines:** ~1,100 lines (before shadcn migration)
+- **Target after migration:** ~900 lines (expect 15-20% reduction from removing custom CSS)
+- **Bundle size:** ~45KB minified (target: <40KB after migration)
+
+### Migration Progress
+
+| Component        | Status      | Before | After | Savings |
+| ---------------- | ----------- | ------ | ----- | ------- |
+| FormatPills      | ✅ Complete | 56L    | 28L   | 50%     |
+| ColorSwatch      | 🔄 Planned  | 80L    | ~50L  | ~38%    |
+| HistoryGrid      | 🔄 Planned  | 85L    | ~55L  | ~35%    |
+| ContrastChecker  | 🔄 Planned  | 125L   | ~100L | ~20%    |
+| TailwindMatch    | 🔄 Planned  | 120L   | ~95L  | ~21%    |
+| PaletteExtractor | 🔄 Planned  | 200L   | ~170L | ~15%    |
+
+**L = Lines of code (including styles)**
+
+### Why shadcn-svelte?
+
+1. **Maintainability** - Consistent design tokens, no CSS to maintain
+2. **Small bundle** - No runtime library, copy only what you use (~3-5KB per component)
+3. **Accessibility** - Components have proper ARIA attributes built-in
+4. **Developer experience** - TypeScript, path aliases, `cn()` helper for conditional classes
+5. **Future-proof** - Built on bits-ui (headless primitives), easy to customize
 
 ### Premium Flow
 
@@ -193,6 +256,13 @@ Runes (`$state`, `$effect`, `$derived`) only work inside `.svelte` files, not `.
 ### ExtPay Content Script
 
 ExtPay requires `ExtPay.js` as a content script to handle `onPaid` callbacks. Vite plugin copies this from `node_modules` to `dist/` during build.
+
+### Path Aliases
+
+We use `$lib/*` aliases for cleaner imports:
+
+- `import { cn } from "$lib/utils"` instead of `import { cn } from "../../lib/utils"`
+- Configured in both `tsconfig.json` (TypeScript) and `vite.config.ts` (bundling)
 
 ---
 
@@ -277,9 +347,10 @@ extpay.onPaid.addListener((user) => {
 - ✅ All 3 premium features
 - ✅ Clean, maintainable codebase (~1,100 lines)
 - ✅ Privacy-friendly architecture
-- ✅ Professional UI/UX
+- ✅ Professional UI/UX with shadcn-svelte (migration in progress)
 - ✅ Error handling
 - ✅ ExtensionPay integration
+- ✅ Path aliases configured (`$lib/*`)
 
 ### Pre-Launch Checklist
 
@@ -288,23 +359,72 @@ extpay.onPaid.addListener((user) => {
 - ✅ Screenshots (1280x800 or 640x400)
 - ✅ Store listing copy
 - ✅ Manifest permissions configured
+- 🔄 shadcn-svelte migration (in progress, 1/6 components complete)
 - [ ] Browser testing (Chrome, Edge)
 - [ ] ExtensionPay account setup
 - [ ] Privacy policy page
 - [ ] Support email
 
-**Status:** Ready to submit to Chrome Web Store
+**Status:** Core features ready, UI polish in progress
 
 ---
 
 ## Key Principles (Maintained)
 
-- ✅ **Small codebase.** 1,100 lines total, fits in one LLM prompt
+- ✅ **Small codebase.** Target: <1,000 lines after shadcn migration
+- ✅ **Maintainable code.** Readable > clever, composition > complexity
 - ✅ **Don't break user's apps.** No DOM injection, native EyeDropper API
 - ✅ **Clipboard must work.** Fallback implemented and tested
 - ✅ **Trust is a feature.** Minimal permissions, transparent about what we access
 - ✅ **Instant UI.** Premium status cached to avoid slow API calls
 - ✅ **Quality over features.** 3 well-executed premium features beats 10 half-baked ones
+- ✅ **Ship only what's needed.** shadcn components = copy what you use, not everything
+
+---
+
+## Code Quality Standards
+
+### When to Extract a Component
+
+**Extract if:**
+
+- Used in 2+ places
+- Complex logic (>50 lines)
+- Clear single responsibility
+
+**Don't extract if:**
+
+- Only used once
+- <30 lines
+- Would create more indirection than clarity
+
+### When to Use shadcn Components
+
+**Use shadcn when:**
+
+- Standard UI pattern (button, card, badge, etc.)
+- Need accessibility built-in
+- Want consistent styling
+
+**Write custom when:**
+
+- Highly specific to your domain (e.g., color swatch)
+- Simple one-off element (<20 lines)
+- Performance-critical (though shadcn is fast)
+
+### Import Style
+
+**Always use path aliases:**
+
+```typescript
+// ✅ Good
+import { cn } from "$lib/utils";
+import type { ColorFormat } from "$lib/colors";
+
+// ❌ Bad
+import { cn } from "../../lib/utils";
+import type { ColorFormat } from "../../lib/colors";
+```
 
 ---
 
@@ -332,6 +452,7 @@ extpay.onPaid.addListener((user) => {
 
 **v1.1 - Polish:**
 
+- Complete shadcn-svelte migration
 - Export palettes (Tailwind config, CSS vars, JSON)
 - Saved palette collections per project
 - Color harmony detection
@@ -353,6 +474,6 @@ extpay.onPaid.addListener((user) => {
 
 ---
 
-**Current Status:** Production-ready, awaiting Chrome Web Store submission.
+**Current Status:** Production-ready core, UI refinement in progress with shadcn-svelte.
 
 Let's ship it! 🚀

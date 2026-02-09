@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { ColorFormat } from '../../lib/colors';
+  import type { ColorFormat } from "$lib/colors";
+  import { cn } from "$lib/utils";
 
   interface Props {
     formats: Readonly<ColorFormat[]>;
@@ -10,47 +11,20 @@
   let { formats, current, onswitch }: Props = $props();
 </script>
 
-<div class="format-pills">
-  {#each formats as f}
+<div
+  class="inline-flex items-center justify-center rounded-lg bg-muted p-0.5 text-muted-foreground gap-0.5"
+>
+  {#each formats as format}
     <button
-      class="pill"
-      class:active={current === f}
-      onclick={() => onswitch(f)}
+      type="button"
+      class={cn(
+        "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium tracking-wide ring-offset-background transition-all",
+        "hover:text-foreground",
+        current === format && "bg-background text-foreground shadow-sm"
+      )}
+      onclick={() => onswitch(format)}
     >
-      {f.toUpperCase()}
+      {format.toUpperCase()}
     </button>
   {/each}
 </div>
-
-<style>
-  .format-pills {
-    display: flex;
-    gap: 2px;
-    background: var(--bg-subtle);
-    border-radius: 8px;
-    padding: 2px;
-  }
-
-  .pill {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 4px 10px;
-    border: none;
-    border-radius: 6px;
-    background: transparent;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    letter-spacing: 0.3px;
-  }
-
-  .pill:hover {
-    color: var(--text);
-  }
-
-  .pill.active {
-    background: #FFFFFF;
-    color: var(--text);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  }
-</style>
