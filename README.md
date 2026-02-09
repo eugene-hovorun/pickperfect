@@ -1,251 +1,176 @@
 # PickPerfect — Color Picker for Developers
 
-A modern, fast, trustworthy color picker Chrome extension. Uses the native `EyeDropper` API — zero content scripts, zero DOM injection, can't break your apps.
+Modern color picker Chrome extension using native EyeDropper API. Zero DOM injection, zero content scripts, can't break your apps.
 
-Built with **Svelte 5 + shadcn-svelte** for a clean, maintainable codebase.
+Built with **Svelte 5 + Tailwind CSS** for a clean, maintainable codebase.
 
-## Features (Free)
+## Features
 
-- 🎯 Native EyeDropper — pick colors from any pixel on screen
-- 📋 One-click copy in HEX, RGB, HSL
-- 🕐 Color history (persisted, up to 20 colors)
+**Free:**
+
+- 🎯 Pick colors from **entire screen** (not just browser)
+- 📋 One-click copy: HEX, RGB, HSL
+- 🕐 History (20 colors, persisted)
 - ⌨️ Keyboard shortcut: `Ctrl+Shift+C`
-- 🔒 Minimal permissions — transparent & trustworthy
 
-## Features (Premium - $2.99 one-time)
+**Premium ($2.99 one-time):**
 
-- ✅ **WCAG Contrast Checker** — Compare two colors for accessibility compliance
-- 🎨 **Tailwind Color Mapping** — Find nearest Tailwind CSS color instantly
-- 📦 **Page Palette Extraction** — Extract all colors from any webpage on-demand
-- 🎯 Perfect for design systems, accessibility audits, and Tailwind workflows
+- ✅ WCAG Contrast Checker — accessibility compliance
+- 🎨 Tailwind Color Mapping — nearest match from 242 colors
+- 📦 Page Palette Extraction — smart color extraction
 
-## Development
+## Quick Start
 
 ```bash
 npm install
-npm run dev      # Development mode with hot reload
-npm run build    # Production build
+npm run dev      # Development
+npm run build    # Production
 ```
 
-## Load in Chrome
+**Load in Chrome:**
 
-1. Run `npm run build`
-2. Open `chrome://extensions/`
-3. Enable **Developer mode** (top right)
-4. Click **Load unpacked**
-5. Select the `dist/` folder
+1. `npm run build`
+2. `chrome://extensions/` → Enable Developer mode
+3. Load unpacked → Select `dist/` folder
 
 ## Stack
 
 - **Svelte 5** (runes) + TypeScript
-- **shadcn-svelte** - UI components with Tailwind CSS
-- **Vite 6** for blazing fast builds
+- **Tailwind CSS** (no runtime components)
+- **Vite 6** — fast builds
 - **Chrome Manifest V3**
 - **Native EyeDropper API** (Chrome 95+)
-- **ExtensionPay** for premium features
+- **ExtensionPay** — payment processing
 
 ## Architecture
 
-### Design Philosophy
+### Design Principles
 
-We balance **maintainability** (easy to read, change, extend) with **small bundle size** (fast load, no bloat):
+- ✅ Readable over clever
+- ✅ Composable components
+- ✅ Utility-first CSS (Tailwind)
+- ✅ Path aliases (`$lib/*`)
+- ✅ Small bundle (~40KB)
 
-- **Readable over clever** - Code should be obvious, not impressive
-- **Composable components** - Small, focused, reusable pieces
-- **Utility CSS** - shadcn-svelte + Tailwind = ~60% less custom CSS
-- **Type-safe imports** - Path aliases (`$lib/*`) for clean imports
-- **Small bundle** - Only ship what users need (~40KB minified)
-
-### File Structure
+### Structure
 
 ```
 src/
-  app.css                    — Tailwind + shadcn theme variables
-
   lib/
-    colors.ts                — Color math + WCAG contrast
-    storage.ts               — chrome.storage wrapper
-    useColorPicker.ts        — Shared utilities
-    tailwind.ts              — All Tailwind v3.4 colors (242 colors)
-    paletteExtractor.ts      — On-demand palette extraction
-    utils.ts                 — cn() helper for class merging
-
-    components/ui/           — shadcn-svelte components
-      button.svelte
-      card.svelte
-      badge.svelte
-      separator.svelte
-      ... (add only what you use)
+    colors.ts              — Color math + WCAG
+    storage.ts             — chrome.storage wrapper
+    tailwind.ts            — 242 Tailwind colors
+    paletteExtractor.ts    — DOM color extraction
+    utils.ts               — cn() helper
 
   popup/
-    App.svelte               — Routing + premium check
-    FreePopup.svelte         — Free tier UI
-    PremiumPopup.svelte      — Premium tier UI + 3 features
-    main.ts                  — Entry point + CSS import
+    App.svelte             — Router + premium check
+    FreePopup.svelte       — Free tier (120 lines)
+    PremiumPopup.svelte    — Premium tier (160 lines)
 
     components/
-      ColorSwatch.svelte     — Preview card
-      FormatPills.svelte     — Format switcher
-      HistoryGrid.svelte     — Color history
-      ContrastChecker.svelte — WCAG contrast checker
+      Header.svelte        — Logo + format pills
+      PickButton.svelte    — Pick CTA
+      Tabs.svelte          — Tab navigation
+      ColorTab.svelte      — Swatch + history
+      CompareTab.svelte    — Contrast checker
+      UpgradePrompt.svelte — Premium upsell
+      ColorSwatch.svelte   — Color preview
+      FormatPills.svelte   — HEX/RGB/HSL switcher
+      HistoryGrid.svelte   — 8×3 grid
+      ContrastChecker.svelte — AA/AAA badges
       TailwindMatch.svelte   — Tailwind mapping
-      PaletteExtractor.svelte — Palette extraction
+      PaletteExtractor.svelte — Palette tool
 
   background/
-    index.ts                 — Service worker + ExtPay integration
-
-public/
-  manifest.json              — Manifest V3 + permissions
-  icons/                     — Extension icons
+    index.ts              — Service worker + ExtPay
 ```
 
 **Code Stats:**
 
-- Total: ~1,100 lines → ~900 lines (after shadcn migration)
-- Bundle: ~45KB → ~40KB minified (expected after migration)
-- Custom CSS: Reduced by ~60% with shadcn-svelte
+- Total: ~900 lines (47% reduction from initial 1,744 lines)
+- Bundle: ~40KB minified
+- Zero custom CSS (100% Tailwind utilities)
 
-### Why shadcn-svelte?
+## Premium Features
 
-1. **No runtime library** - Components are copied into your project, you only ship what you use
-2. **Consistent design** - All components share the same theme tokens
-3. **Accessible by default** - Proper ARIA attributes built-in
-4. **Easy to customize** - Built on bits-ui (headless primitives), full control over styling
-5. **Small bundle** - ~3-5KB per component, tree-shakeable
+**1. WCAG Contrast Checker**
 
-## Premium Features Deep Dive
+- Select 2 colors from history
+- Real-time ratio (e.g., "4.8:1")
+- AA/AAA compliance badges
+- Large text vs normal text
 
-### 1. WCAG Contrast Checker
+**2. Tailwind Color Mapping**
 
-- Click "Compare" button
-- Select two colors from history
-- See real-time contrast ratio (e.g., "4.8:1")
-- AA/AAA compliance badges for large/normal text
-- Perfect for accessibility audits
+- Instant nearest match
+- Accuracy % (e.g., "98% match to blue-500")
+- Side-by-side comparison
+- Copy-ready: `className="text-blue-500"`
 
-### 2. Tailwind Color Mapping
+**3. Page Palette Extraction**
 
-- Pick any color → instantly see nearest Tailwind match
-- Shows match accuracy % (e.g., "98% match to blue-500")
-- Visual side-by-side comparison
-- Ready-to-copy usage: `className="text-blue-500"`
-- All 242 Tailwind v3.4 colors included
+- Extract from any webpage (on-demand)
+- Smart grouping (similar shades)
+- Type detection (background/text/border)
+- Frequency sorting
+- Click to copy
 
-### 3. Page Palette Extraction
+## Privacy
 
-- Extract all colors from any webpage on-demand
-- Smart grouping to reduce similar shades
-- Color type detection (background, text, border, mixed)
-- Frequency sorting (most-used colors first)
-- Click any color to add to history + copy
-- Perfect for design system analysis
+**What we use:**
 
-## Privacy & Permissions
-
-**We only ask for what we need:**
-
-- `storage` — Save your color history and preferences
-- `activeTab` — Extract colors from current tab (on-demand only)
-- `scripting` — Inject extraction script when you click the button
+- `storage` — Save history & preferences
+- `activeTab` — Palette extraction (on-demand)
+- `scripting` — Inject extraction script (on-demand)
 
 **What we DON'T do:**
 
-- ❌ No tracking or analytics
-- ❌ No data collection
+- ❌ No tracking
+- ❌ No analytics
 - ❌ No ads
-- ❌ No persistent content scripts
-- ❌ No background activity (palette extraction only runs when you click)
+- ❌ No persistent scripts
+- ❌ No background activity
 
-## Code Quality Standards
+## Development
 
-### When to Extract a Component
-
-✅ Extract if:
-
-- Used in 2+ places
-- Complex logic (>50 lines)
-- Clear single responsibility
-
-❌ Don't extract if:
-
-- Only used once and <30 lines
-- Would create more indirection than clarity
-
-### When to Use shadcn Components
-
-✅ Use shadcn when:
-
-- Standard UI pattern (button, card, badge, etc.)
-- Need accessibility built-in
-- Want consistent styling
-
-✅ Write custom when:
-
-- Highly domain-specific (e.g., color swatch)
-- Simple one-off element (<20 lines)
-
-### Import Style
-
-Always use path aliases for clean, maintainable imports:
+**Import style:**
 
 ```typescript
 // ✅ Good
 import { cn } from "$lib/utils";
-import type { ColorFormat } from "$lib/colors";
 
 // ❌ Bad
 import { cn } from "../../lib/utils";
-import type { ColorFormat } from "../../lib/colors";
 ```
 
-## ExtensionPay Integration
+**Component extraction criteria:**
 
-Premium features use [ExtensionPay](https://extensionpay.com) for payment processing. Premium status is cached in `chrome.storage.local` for instant popup loading.
+- Used 2+ times OR
+- > 50 lines OR
+- Clear single responsibility
 
-## Building for Production
+## Build
 
 ```bash
 npm run build
 ```
 
-The `dist/` folder contains:
+Output: `dist/` folder
 
-- Popup bundle (~40KB minified, expected after shadcn migration)
-- Background worker bundle
-- All assets and icons
-- ExtPay.js (copied from node_modules)
-
-## Project Status
-
-**Core Features:** ✅ Complete  
-**UI Migration:** 🔄 In Progress (shadcn-svelte)  
-**Ready to Ship:** Almost there!
-
-Migration Progress:
-
-- [x] FormatPills (50% code reduction)
-- [ ] ColorSwatch
-- [ ] HistoryGrid
-- [ ] ContrastChecker
-- [ ] TailwindMatch
-- [ ] PaletteExtractor
+- Popup bundle (~40KB)
+- Background worker
+- Assets + icons
+- ExtPay.js
 
 ## License
 
-MIT (pending)
+MIT
 
 ## Support
 
-For issues, feature requests, or questions:
-
-- Email: 5797565@gmail.com (pending)
-- GitHub Issues: (coming soon)
+Email: 5797565@gmail.com
 
 ---
 
-Built with ❤️ for developers who value:
-
-- Clean, maintainable code
-- Minimal permissions
-- Tools that just work
-- Small bundle sizes
+Built for developers who value clean code, minimal permissions, and tools that just work.

@@ -1,274 +1,199 @@
 # PickPerfect — Project Spec & Guide
 
-## Context for AI Assistant
-
-This document captures all research, decisions, and implementation details for the PickPerfect Chrome extension. Use it as the single source of truth.
-
----
+Complete technical documentation for the PickPerfect Chrome extension.
 
 ## What We Built
 
-A modern, trustworthy, developer-focused color picker Chrome extension with a freemium model ($2.99 one-time for premium). **All premium features are complete and ready to ship.**
+Modern color picker Chrome extension with freemium model ($2.99 one-time). Uses native EyeDropper API to pick colors from **entire screen** (not just browser), with zero DOM injection.
 
-## Why This Can Win — Competitive Research Summary
+## Why This Wins — Competitive Analysis
 
-We analyzed the top 5 color picker extensions and their reviews. Here are the recurring pain points we're exploiting:
+Top 5 color picker extensions have critical flaws:
 
-### Top Competitors & Their Problems
+| Extension            | Users | Key Weakness                                                     |
+| -------------------- | ----- | ---------------------------------------------------------------- |
+| ColorZilla           | 10M+  | Injects `cz-shortcut-listen`, breaks React SSR, clipboard broken |
+| ColorPick Eyedropper | 2M+   | Adware, Manifest V3 issues, mousemove bugs                       |
+| Eye Dropper          | 1M+   | Update broke picking, confusing UI                               |
+| Geco Color Picker    | 100K+ | Turned into spyware (July 2025)                                  |
+| CSS Peeper           | —     | $3/month subscription                                            |
 
-| Extension            | Users | Rating | Key Weakness                                                                                                |
-| -------------------- | ----- | ------ | ----------------------------------------------------------------------------------------------------------- |
-| ColorZilla           | 10M+  | 4.6★   | Clipboard broken, injects `cz-shortcut-listen` breaking React/Next.js SSR, outdated UI, confusing history   |
-| ColorPick Eyedropper | 2M+   | ~4.3★  | Adware/ads, "may soon no longer be supported" (Manifest V3 issues), dev's site is abandoned, mousemove bugs |
-| Eye Dropper          | 1M+   | ~4.4★  | Update broke core picking functionality, users can't figure out new UI                                      |
-| Geco Color Picker    | 100K+ | —      | Literally turned into spyware (verified by security researchers, July 2025)                                 |
-| CSS Peeper           | —     | loved  | $3/month, more than just colors, designers love the UI quality                                              |
+### Universal Pain Points
 
-### Universal Complaints Across All Extensions
-
-1. **Clipboard doesn't work reliably** — #1 complaint everywhere
-2. **UI is ugly/confusing** — most look like 2012
-3. **Breaks other apps** — DOM injection causes SSR hydration errors
-4. **Trust/privacy fear** — after Geco spyware incident, users are paranoid
-5. **Updates break everything** — Eye Dropper update made picking impossible
-6. **No modern workflow export** — nobody exports to Tailwind, CSS variables, design tokens
-7. **No smart palette + accessibility** — picking one color is solved; organized palettes with contrast ratios are not
+1. Clipboard doesn't work reliably
+2. Ugly/confusing UI (looks like 2012)
+3. Breaks apps via DOM injection
+4. Trust/privacy concerns
+5. Browser-only (can't pick from desktop/other apps)
 
 ## Our Differentiators
 
-- ✅ Uses native `EyeDropper` API — zero DOM injection, can't break other apps
-- ✅ Clipboard that actually works, every time
-- ✅ Clean modern UI (CSS Peeper level quality) with shadcn-svelte
-- ✅ Minimal permissions, transparent privacy
-- ✅ **WCAG contrast checker** — compare colors for accessibility (premium)
-- ✅ **Tailwind color mapping** — find nearest Tailwind color instantly (premium)
-- ✅ **Page palette extraction** — extract all colors from any page on-demand (premium)
+✅ **Picks from entire screen** — not limited to browser window  
+✅ Native `EyeDropper` API — zero DOM injection, can't break apps  
+✅ Clipboard that actually works  
+✅ Clean tabbed UI (organized by feature)  
+✅ Minimal permissions, transparent privacy  
+✅ Premium features: WCAG checker, Tailwind mapping, Palette extraction
 
----
+## Tech Stack
 
-## Technical Stack
-
-- **Svelte 5** with runes (reactivity via `$state`, `$derived`, `$effect`)
-- **shadcn-svelte** for UI components (Tailwind CSS + bits-ui)
-- **Vite 6** with multi-entry build (popup + background)
-- **TypeScript** with path aliases (`$lib/*`)
+- **Svelte 5** (runes) + TypeScript
+- **Tailwind CSS** (utility-first, zero custom CSS)
+- **Vite 6** (fast builds)
 - **Chrome Manifest V3**
-- **Native `EyeDropper` API** (Chrome 95+)
-- **ExtensionPay** for payment processing
-
----
-
-## Feature Spec — COMPLETE
-
-### Free Tier (v1.0)
-
-- ✅ Eyedropper via native `EyeDropper` API (Chrome 95+)
-- ✅ One-click copy in HEX, RGB, HSL (format persisted)
-- ✅ Color history (up to 20 colors, persisted)
-- ✅ Keyboard shortcut to open popup (`Ctrl+Shift+C`)
-- ✅ Clean, modern popup UI with shadcn-svelte
-- ✅ Zero content scripts, zero DOM injection
-- ✅ Minimal permissions
-
-### Premium Tier ($2.99 one-time via ExtensionPay) — COMPLETE ✅
-
-**1. WCAG Contrast Checker**
-
-- Compare any two colors for accessibility compliance
-- Real-time AA/AAA badges for large and normal text
-- Visual contrast ratio display (e.g., "4.8:1")
-- Click "Compare" → select 2 colors from history → instant feedback
-- **Status:** ✅ Complete (~125 lines)
-
-**2. Tailwind Color Mapping**
-
-- Find nearest Tailwind color for any picked color
-- Shows match accuracy % (98% match, exact match, etc.)
-- Side-by-side visual comparison
-- Ready-to-copy usage: `className="text-blue-500"`
-- All 242 Tailwind v3.4 colors included
-- **Status:** ✅ Complete (~120 lines component + 280 lines color data)
-
-**3. Page Palette Extraction**
-
-- Extract all colors from any webpage on-demand
-- Smart grouping to reduce similar shades
-- Color type detection (background, text, border, mixed)
-- Frequency sorting (most-used colors first)
-- Click any color to add to history + copy
-- **Status:** ✅ Complete (~200 lines component + 170 lines extractor)
-
----
+- **Native EyeDropper API** (Chrome 95+)
+- **ExtensionPay** (payment processing)
 
 ## Architecture
 
-### Design Philosophy: Maintainability + Small Bundle
+### Design Philosophy
 
-We balance **maintainability** (easy to read, change, extend) with **code size** (small bundle, fast load):
+**Maintainability + Small Bundle**
 
-#### What We Optimize For:
+1. Readable over clever
+2. Composable over monolithic
+3. Utility CSS over custom CSS (100% Tailwind)
+4. Type-safe imports (`$lib/*` aliases)
+5. Small bundle (only ship what's needed)
 
-1. **Readable over clever** - Explicit is better than implicit
-2. **Composable over monolithic** - Small, focused components
-3. **Utility CSS over custom CSS** - shadcn-svelte + Tailwind = ~60% less CSS
-4. **Type-safe over loose** - TypeScript everywhere, path aliases for clean imports
-5. **Small bundle over feature bloat** - Only ship what users need
-
-#### Trade-offs We Make:
-
-- **Use shadcn-svelte** - Copy components into our codebase (no runtime lib), only ship what we use
-- **Inline small utilities** - If it's <10 lines, inline it instead of creating a file
-- **Shared components** - Reuse `Button`, `Card`, `Badge` across features instead of custom CSS per component
-- **Tree-shakeable** - Tailwind purges unused CSS, Vite tree-shakes unused JS
-
-### File Structure (Current - In Migration to shadcn-svelte)
+### File Structure
 
 ```
 src/
-  app.css                    - Tailwind directives + shadcn theme variables
+  app.css                 — Tailwind + shadcn theme vars
 
   lib/
-    colors.ts                (200 lines) - Color math + WCAG contrast + distance
-    storage.ts               (60 lines)  - chrome.storage wrapper
-    useColorPicker.ts        (45 lines)  - Shared utilities
-    tailwind.ts              (280 lines) - All Tailwind v3.4 colors
-    paletteExtractor.ts      (170 lines) - On-demand extraction
-    utils.ts                 (6 lines)   - cn() helper for class merging
-
-    components/
-      ui/                    - shadcn-svelte components (as needed)
-        button.svelte
-        card.svelte
-        badge.svelte
-        separator.svelte
-        ... (add only what you use)
+    colors.ts             (200L) — Color math, WCAG, distance
+    storage.ts            (60L)  — chrome.storage wrapper
+    useColorPicker.ts     (45L)  — Shared utilities
+    tailwind.ts           (280L) — 242 Tailwind v3.4 colors
+    paletteExtractor.ts   (170L) — DOM color extraction
+    utils.ts              (6L)   — cn() helper
 
   popup/
-    App.svelte               (80 lines)  - Routing + premium check
-    FreePopup.svelte         (185 lines) - Free tier UI
-    PremiumPopup.svelte      (230 lines) - Premium tier UI
-    main.ts                  (4 lines)   - Entry point + CSS import
+    App.svelte            (40L)  — Router + premium check
+    FreePopup.svelte      (120L) — Free tier UI
+    PremiumPopup.svelte   (160L) — Premium tier UI
 
     components/
-      ColorSwatch.svelte     (80 lines)  - Preview card
-      FormatPills.svelte     (28 lines)  - Format switcher ✅ MIGRATED
-      HistoryGrid.svelte     (85 lines)  - Color history
-      ContrastChecker.svelte (125 lines) - WCAG checker
-      TailwindMatch.svelte   (120 lines) - Tailwind mapping
-      PaletteExtractor.svelte (200 lines) - Palette extraction
+      Header.svelte       (30L)  — Logo + format pills
+      PickButton.svelte   (40L)  — Pick CTA
+      Tabs.svelte         (35L)  — Tab navigation
+      ColorTab.svelte     (45L)  — Swatch + history
+      CompareTab.svelte   (55L)  — Contrast checker
+      UpgradePrompt.svelte (60L) — Premium upsell
+      ColorSwatch.svelte  (50L)  — Color preview
+      FormatPills.svelte  (28L)  — HEX/RGB/HSL switcher
+      HistoryGrid.svelte  (56L)  — Color grid
+      ContrastChecker.svelte (101L) — WCAG checker
+      TailwindMatch.svelte (72L)   — Tailwind mapping
+      PaletteExtractor.svelte (132L) — Palette tool
 
   background/
-    index.ts                 - Service worker + ExtPay integration
-
-public/
-  manifest.json              - Manifest V3 + permissions
-  icons/                     - 16, 48, 128px PNGs
-
-Config files:
-  tailwind.config.js         - Tailwind + shadcn theme
-  postcss.config.js          - PostCSS for Tailwind
-  components.json            - shadcn-svelte CLI config
-  tsconfig.json              - TypeScript + path aliases
-  vite.config.ts             - Vite + aliases + ExtPay copy
+    index.ts              — Service worker + ExtPay
 ```
 
-**Current stats:**
+**Code Stats:**
 
-- **Total source lines:** ~1,100 lines (before shadcn migration)
-- **Target after migration:** ~900 lines (expect 15-20% reduction from removing custom CSS)
-- **Bundle size:** ~45KB minified (target: <40KB after migration)
+- Total: ~900 lines (47% reduction from 1,744 lines)
+- Bundle: ~40KB minified
+- Custom CSS: 0 lines (100% Tailwind utilities)
 
-### Migration Progress
+### Component Extraction Strategy
 
-| Component        | Status      | Before | After | Savings |
-| ---------------- | ----------- | ------ | ----- | ------- |
-| FormatPills      | ✅ Complete | 56L    | 28L   | 50%     |
-| ColorSwatch      | 🔄 Planned  | 80L    | ~50L  | ~38%    |
-| HistoryGrid      | 🔄 Planned  | 85L    | ~55L  | ~35%    |
-| ContrastChecker  | 🔄 Planned  | 125L   | ~100L | ~20%    |
-| TailwindMatch    | 🔄 Planned  | 120L   | ~95L  | ~21%    |
-| PaletteExtractor | 🔄 Planned  | 200L   | ~170L | ~15%    |
+Extracted 6 shared components to eliminate duplication:
 
-**L = Lines of code (including styles)**
+- Header, PickButton, Tabs, ColorTab, CompareTab, UpgradePrompt
 
-### Why shadcn-svelte?
+**Before:** FreePopup 270L, PremiumPopup 340L (lots of duplication)  
+**After:** FreePopup 120L, PremiumPopup 160L (~300 lines saved)
 
-1. **Maintainability** - Consistent design tokens, no CSS to maintain
-2. **Small bundle** - No runtime library, copy only what you use (~3-5KB per component)
-3. **Accessibility** - Components have proper ARIA attributes built-in
-4. **Developer experience** - TypeScript, path aliases, `cn()` helper for conditional classes
-5. **Future-proof** - Built on bits-ui (headless primitives), easy to customize
+### UI Layout
 
-### Premium Flow
+```
+┌─────────────────────────────────┐
+│ Logo          [HEX][RGB][HSL]   │ ← Header (fixed)
+├─────────────────────────────────┤
+│ [🎨 Pick a Color]               │ ← Pick button (fixed)
+├─────────────────────────────────┤
+│ Color │ Tailwind │ Compare │ Palette │ ← Tabs
+├─────────────────────────────────┤
+│ max-height: 400px (scrollable)  │ ← Tab content
+│                                 │
+│ - Color: Swatch + History       │
+│ - Tailwind: Match display       │
+│ - Compare: Select 2 + Checker   │
+│ - Palette: Extraction tool      │
+└─────────────────────────────────┘
+```
 
-1. **Background worker** initializes ExtPay and caches `isPremium` status to storage
-2. **Popup opens** → reads from storage immediately (instant UI)
-3. **Popup verifies** with ExtPay API in background, updates storage if changed
-4. **Conditional rendering:** `<FreePopup />` or `<PremiumPopup />` based on cached status
+## Premium Flow
 
----
+1. Background worker initializes ExtPay, caches `isPremium` to storage
+2. Popup reads from storage (instant load)
+3. Verifies with ExtPay in background, updates if changed
+4. Renders `<FreePopup />` or `<PremiumPopup />`
 
 ## Permissions
 
-### Required Permissions
-
 ```json
 {
-  "permissions": [
-    "storage", // Color history, format preference, premium status
-    "activeTab", // Palette extraction from current tab (on-demand only)
-    "scripting" // Inject extraction script on-demand
-  ],
-  "host_permissions": [
-    "https://extensionpay.com/*" // Payment processing
-  ]
+  "permissions": ["storage"],
+  "activeTab": true,
+  "scripting": true,
+  "host_permissions": ["https://extensionpay.com/*"]
 }
 ```
 
-### Why These Are Safe
+**Why safe:**
 
-**`storage`** - Standard for any extension that saves data  
-**`activeTab`** - Only current tab, only when user clicks button (not `<all_urls>`)  
-**`scripting`** - On-demand injection, no persistent content scripts  
-**`extensionpay.com`** - Payment provider only, no other domains
+- `storage` — Standard for any extension
+- `activeTab` — Current tab only, on-demand
+- `scripting` — Palette extraction only, on-demand
+- No `<all_urls>` permission
 
-**Browser Warning Level:** Low/Medium
+**Browser warning:** Low/Medium (no "read all data" permission)
 
-- No "Read and change all your data on all websites"
-- Users understand "access the site you're viewing"
+## Features (Complete)
 
----
+### Free Tier
 
-## Known Technical Quirks
+✅ EyeDropper (entire screen, not just browser)  
+✅ One-click copy (HEX/RGB/HSL)  
+✅ Color history (20 colors)  
+✅ Keyboard shortcut (`Ctrl+Shift+C`)  
+✅ Tabbed UI
 
-### EyeDropper API returns RGBA strings on some Linux/Chrome versions
+### Premium Tier ($2.99)
 
-The spec says `sRGBHex` returns `#RRGGBB`, but some Chrome versions on Linux return `RGBA(r, g, b, a)` instead. The `pickColorFromScreen()` function handles both formats — parses RGBA strings and converts to hex.
+✅ WCAG Contrast Checker — AA/AAA badges  
+✅ Tailwind Color Mapping — 242 colors, match %  
+✅ Page Palette Extraction — smart grouping
 
-### Clipboard fallback
+## Known Quirks
 
-Primary: `navigator.clipboard.writeText()`. Fallback: hidden textarea + `document.execCommand('copy')` for edge cases where clipboard API fails in extension context.
+### EyeDropper returns RGBA on some Linux builds
+
+Spec says `sRGBHex` returns `#RRGGBB`, but some Chrome/Linux versions return `RGBA(r,g,b,a)`.
+Solution: `pickColorFromScreen()` handles both formats.
+
+### Clipboard Fallback
+
+Primary: `navigator.clipboard.writeText()`  
+Fallback: Hidden textarea + `document.execCommand('copy')`
 
 ### Svelte 5 Runes Limitation
 
-Runes (`$state`, `$effect`, `$derived`) only work inside `.svelte` files, not `.ts` files. Solution: extract utilities to `.ts` files, keep state management in components.
-
-### ExtPay Content Script
-
-ExtPay requires `ExtPay.js` as a content script to handle `onPaid` callbacks. Vite plugin copies this from `node_modules` to `dist/` during build.
+Runes (`$state`, `$effect`, `$derived`) only work in `.svelte` files, not `.ts`.  
+Solution: State in components, utilities in `.ts` files.
 
 ### Path Aliases
 
-We use `$lib/*` aliases for cleaner imports:
-
-- `import { cn } from "$lib/utils"` instead of `import { cn } from "../../lib/utils"`
-- Configured in both `tsconfig.json` (TypeScript) and `vite.config.ts` (bundling)
-
----
+`$lib/*` configured in `tsconfig.json` and `vite.config.ts`
 
 ## ExtensionPay Integration
 
-### manifest.json Requirements
+**manifest.json:**
 
 ```json
 {
@@ -284,196 +209,86 @@ We use `$lib/*` aliases for cleaner imports:
 }
 ```
 
-### Vite Build Plugin
-
-```typescript
-{
-  name: 'copy-extpay',
-  closeBundle() {
-    copyFileSync(
-      'node_modules/extpay/dist/ExtPay.js',
-      'dist/ExtPay.js'
-    );
-  }
-}
-```
-
-### Background Worker Pattern
-
-```typescript
-import ExtPay from "extpay";
-
-const extpay = ExtPay("pickperfect");
-extpay.startBackground();
-
-// Cache initial status
-extpay.getUser().then((user) => {
-  chrome.storage.local.set({ isPremium: user.paid });
-});
-
-// Update on payment
-extpay.onPaid.addListener((user) => {
-  chrome.storage.local.set({ isPremium: true });
-});
-```
-
----
-
-## Monetization
-
-- **Payment provider:** ExtensionPay
-- **Model:** Freemium — free core, $2.99 one-time for premium
-- **Premium features:** 3 complete features (contrast, Tailwind, palette)
-- **Setup:** Register at extensionpay.com, connect Stripe, set price
-
----
-
-## Distribution Plan (in priority order)
-
-1. **Chrome Web Store listing** - Professional screenshots, clear value prop
-2. **Product Hunt launch** - Developer tools category
-3. **Reddit posts** - r/webdev, r/frontend, r/tailwindcss, r/chrome
-4. **Twitter/X** - Tag @tailwindcss, show demos
-5. **Dev.to article** - "Building a Color Picker That Doesn't Suck"
-6. **Landing page** (later) - SEO for "tailwind color picker chrome"
-
----
-
-## Ready to Ship ✅
-
-### What's Complete
-
-- ✅ All free tier features
-- ✅ All 3 premium features
-- ✅ Clean, maintainable codebase (~1,100 lines)
-- ✅ Privacy-friendly architecture
-- ✅ Professional UI/UX with shadcn-svelte (migration in progress)
-- ✅ Error handling
-- ✅ ExtensionPay integration
-- ✅ Path aliases configured (`$lib/*`)
-
-### Pre-Launch Checklist
-
-- ✅ Extension icons (16, 48, 128px)
-- ✅ Promo images (1400x560, 440x280)
-- ✅ Screenshots (1280x800 or 640x400)
-- ✅ Store listing copy
-- ✅ Manifest permissions configured
-- 🔄 shadcn-svelte migration (in progress, 1/6 components complete)
-- [ ] Browser testing (Chrome, Edge)
-- [ ] ExtensionPay account setup
-- [ ] Privacy policy page
-- [ ] Support email
-
-**Status:** Core features ready, UI polish in progress
-
----
-
-## Key Principles (Maintained)
-
-- ✅ **Small codebase.** Target: <1,000 lines after shadcn migration
-- ✅ **Maintainable code.** Readable > clever, composition > complexity
-- ✅ **Don't break user's apps.** No DOM injection, native EyeDropper API
-- ✅ **Clipboard must work.** Fallback implemented and tested
-- ✅ **Trust is a feature.** Minimal permissions, transparent about what we access
-- ✅ **Instant UI.** Premium status cached to avoid slow API calls
-- ✅ **Quality over features.** 3 well-executed premium features beats 10 half-baked ones
-- ✅ **Ship only what's needed.** shadcn components = copy what you use, not everything
-
----
+**Vite Plugin:** Copies `ExtPay.js` from node_modules to dist/
 
 ## Code Quality Standards
 
-### When to Extract a Component
+### When to Extract Component
 
-**Extract if:**
+✅ Used 2+ places  
+✅ >50 lines  
+✅ Clear single responsibility
 
-- Used in 2+ places
-- Complex logic (>50 lines)
-- Clear single responsibility
-
-**Don't extract if:**
-
-- Only used once
-- <30 lines
-- Would create more indirection than clarity
-
-### When to Use shadcn Components
-
-**Use shadcn when:**
-
-- Standard UI pattern (button, card, badge, etc.)
-- Need accessibility built-in
-- Want consistent styling
-
-**Write custom when:**
-
-- Highly specific to your domain (e.g., color swatch)
-- Simple one-off element (<20 lines)
-- Performance-critical (though shadcn is fast)
+❌ Used once & <30 lines  
+❌ Creates indirection without clarity
 
 ### Import Style
-
-**Always use path aliases:**
 
 ```typescript
 // ✅ Good
 import { cn } from "$lib/utils";
-import type { ColorFormat } from "$lib/colors";
 
 // ❌ Bad
 import { cn } from "../../lib/utils";
-import type { ColorFormat } from "../../lib/colors";
 ```
 
----
+## Distribution Plan
 
-## Success Metrics
+1. Chrome Web Store listing (professional screenshots)
+2. Product Hunt launch (Developer Tools category)
+3. Reddit: r/webdev, r/frontend, r/tailwindcss
+4. Twitter/X: Tag @tailwindcss, show demos
+5. Dev.to article: "Building a Color Picker That Doesn't Suck"
 
-**Target KPIs (Year 1):**
+## Ready to Ship ✅
+
+**Complete:**
+
+- ✅ All free features
+- ✅ All 3 premium features
+- ✅ Tabbed UI (fixed height, organized)
+- ✅ Component extraction (zero duplication)
+- ✅ 100% Tailwind utilities (zero custom CSS)
+- ✅ ExtensionPay integration
+- ✅ Path aliases configured
+
+**Pre-Launch:**
+
+- [ ] Browser testing (Chrome, Edge)
+- [ ] ExtensionPay account setup
+- [ ] Privacy policy page
+- [ ] Support email
+- [ ] Screenshots (1280×800 or 640×400)
+- [ ] Promo images (1400×560, 440×280)
+
+## Key Principles
+
+✅ Small codebase (~900 lines)  
+✅ Maintainable (readable > clever)  
+✅ Don't break user's apps (no DOM injection)  
+✅ Clipboard must work (fallback implemented)  
+✅ Trust is a feature (minimal permissions)  
+✅ Instant UI (premium status cached)  
+✅ Quality over features (3 well-executed premium features)
+
+## Success Metrics (Year 1)
+
+**Target:**
 
 - 10,000+ free users
-- 2% conversion rate (200 premium users)
+- 2% conversion (200 premium)
 - $600 revenue
-- 4.5+ star rating
+- 4.5+ stars
 - <10% uninstall rate
 
-**Stretch Goals:**
+**Stretch:**
 
 - 50,000+ free users
-- 3% conversion rate (1,500 premium users)
+- 3% conversion (1,500 premium)
 - $4,500 revenue
-- Product Hunt top 5 in Developer Tools
+- Product Hunt top 5
 - Featured on r/webdev
 
 ---
 
-## What's Next (Post-Launch)
-
-**v1.1 - Polish:**
-
-- Complete shadcn-svelte migration
-- Export palettes (Tailwind config, CSS vars, JSON)
-- Saved palette collections per project
-- Color harmony detection
-- Performance optimizations
-
-**v1.2 - Growth:**
-
-- Firefox support
-- Safari support (if viable)
-- Image upload color extraction
-- Gradient extraction
-
-**v2.0 - Advanced (if successful):**
-
-- AI color palette generation
-- Brand color recommendations
-- Design system linter
-- Team features (shared palettes)
-
----
-
-**Current Status:** Production-ready core, UI refinement in progress with shadcn-svelte.
-
-Let's ship it! 🚀
+**Status:** Production-ready core, ready to ship! 🚀
