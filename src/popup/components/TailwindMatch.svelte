@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { findNearestColor, luminance } from '../../lib/colors';
-  import { tailwindColorsList } from '../../lib/tailwind';
+  import { findNearestColor, luminance } from '$lib/colors';
+  import { tailwindColorsList } from '$lib/tailwind';
+  import { cn } from '$lib/utils';
 
   interface Props {
     color: string;
@@ -15,129 +16,70 @@
   let matchTextColor = $derived(luminance(match.hex) > 0.6 ? '#1D1D1F' : '#FFFFFF');
 </script>
 
-<section class="tailwind-match">
-  <div class="match-header">
-    <span class="label">NEAREST TAILWIND COLOR</span>
+<section class="bg-muted/50 rounded-xl p-3 flex flex-col gap-3">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <span class="text-[11px] font-medium text-muted-foreground tracking-wider">
+      NEAREST TAILWIND COLOR
+    </span>
     {#if isExactMatch}
-      <span class="exact-badge">Exact Match</span>
+      <span class="text-[10px] font-semibold px-1.5 py-0.5 bg-green-500/15 text-green-600 dark:text-green-500 rounded tracking-wide">
+        Exact Match
+      </span>
     {:else}
-      <span class="accuracy">{accuracy.toFixed(0)}% match</span>
+      <span class="text-[11px] font-medium text-muted-foreground">
+        {accuracy.toFixed(0)}% match
+      </span>
     {/if}
   </div>
 
-  <div class="colors-compare">
-    <div class="color-box">
-      <div class="color-swatch" style="background-color: {color}; color: {textColor};">
+  <!-- Color Comparison -->
+  <div class="flex items-center gap-3">
+    <!-- Your Color -->
+    <div class="flex-1 flex flex-col gap-1.5">
+      <div 
+        class="h-14 rounded-lg flex items-center justify-center text-[11px] font-semibold tracking-wide border border-border"
+        style="background-color: {color}; color: {textColor};"
+      >
         {color}
       </div>
-      <span class="color-label">Your Color</span>
+      <span class="text-[11px] font-medium text-foreground text-center">
+        Your Color
+      </span>
     </div>
 
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <!-- Arrow -->
+    <svg 
+      width="20" 
+      height="20" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      stroke-width="2"
+      class="flex-shrink-0 text-muted-foreground"
+    >
       <line x1="5" y1="12" x2="19" y2="12"></line>
       <polyline points="12 5 19 12 12 19"></polyline>
     </svg>
 
-    <div class="color-box">
-      <div class="color-swatch" style="background-color: {match.hex}; color: {matchTextColor};">
+    <!-- Tailwind Match -->
+    <div class="flex-1 flex flex-col gap-1.5">
+      <div 
+        class="h-14 rounded-lg flex items-center justify-center text-[11px] font-semibold tracking-wide border border-border"
+        style="background-color: {match.hex}; color: {matchTextColor};"
+      >
         {match.hex}
       </div>
-      <span class="color-label">{match.name}</span>
+      <span class="text-[11px] font-medium text-foreground text-center">
+        {match.name}
+      </span>
     </div>
   </div>
 
-  <div class="usage-example">
-    <code>className="text-{match.name} bg-{match.name}"</code>
+  <!-- Usage Example -->
+  <div class="bg-background border border-border rounded-lg px-2.5 py-2">
+    <code class="text-[11px] font-mono text-foreground break-all">
+      className="text-{match.name} bg-{match.name}"
+    </code>
   </div>
 </section>
-
-<style>
-  .tailwind-match {
-    background: var(--bg-subtle);
-    border-radius: 12px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .match-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .label {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    letter-spacing: 0.5px;
-  }
-
-  .exact-badge {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 6px;
-    background: rgba(52, 199, 89, 0.15);
-    color: #34C759;
-    border-radius: 4px;
-    letter-spacing: 0.3px;
-  }
-
-  .accuracy {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-secondary);
-  }
-
-  .colors-compare {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .colors-compare svg {
-    flex-shrink: 0;
-    stroke: var(--text-secondary);
-  }
-
-  .color-box {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .color-swatch {
-    height: 56px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    border: 1px solid var(--border);
-  }
-
-  .color-label {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text);
-    text-align: center;
-  }
-
-  .usage-example {
-    background: #FFFFFF;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 10px;
-  }
-
-  code {
-    font-size: 11px;
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-    color: var(--text);
-    word-break: break-all;
-  }
-</style>

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { formatColor, type ColorFormat } from '../lib/colors';
-  import { hasEyeDropper, formats, pickColorFromScreen, copyToClipboard as copyText } from '../lib/useColorPicker';
+  import { formatColor, type ColorFormat } from '$lib/colors';
+  import { hasEyeDropper, formats, pickColorFromScreen, copyToClipboard as copyText } from '$lib/useColorPicker';
   import {
     getHistory,
     addToHistory,
@@ -9,7 +9,8 @@
     getFormat,
     setFormat,
     type ColorEntry,
-  } from '../lib/storage';
+  } from '$lib/storage';
+  import { cn } from '$lib/utils';
   import ColorSwatch from './components/ColorSwatch.svelte';
   import FormatPills from './components/FormatPills.svelte';
   import ContrastChecker from './components/ContrastChecker.svelte';
@@ -123,13 +124,15 @@
   }
 </script>
 
-<main>
+<main class="p-4 flex flex-col gap-3">
   <!-- Header -->
-  <header>
-    <div class="logo">
+  <header class="flex items-center justify-between">
+    <div class="flex items-center gap-1.5 text-sm font-semibold text-foreground">
       <img src="./icons/icon-48.png" alt="" width="18" height="18" />
       <span>PickPerfect</span>
-      <span class="premium-badge">✨ PREMIUM</span>
+      <span class="text-[9px] font-bold px-1.5 py-0.5 bg-gradient-to-br from-amber-200/50 to-orange-200/50 text-foreground rounded tracking-wider ml-1">
+        ✨ PREMIUM
+      </span>
     </div>
     <FormatPills 
       formats={formats} 
@@ -140,8 +143,19 @@
 
   <!-- Pick Button -->
   {#if hasEyeDropper}
-    <button class="pick-btn" onclick={pickColor} disabled={picking}>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <button 
+      class={cn(
+        "flex items-center justify-center gap-2 w-full py-3 px-4",
+        "text-sm font-semibold text-primary-foreground rounded-xl transition-all",
+        "bg-primary hover:bg-primary/90",
+        picking 
+          ? "opacity-70 cursor-wait" 
+          : "hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30 active:translate-y-0"
+      )}
+      onclick={pickColor} 
+      disabled={picking}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-white">
         <path d="m2 22 1-1h3l9-9" />
         <path d="M3 21v-3l9-9" />
         <path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3L15 6" />
@@ -149,7 +163,7 @@
       {picking ? 'Picking…' : 'Pick a Color'}
     </button>
   {:else}
-    <div class="error-banner">
+    <div class="px-3 py-2.5 text-xs text-destructive bg-destructive/10 rounded-lg text-center">
       EyeDropper API not available. Please use Chrome 95+.
     </div>
   {/if}
@@ -176,7 +190,9 @@
 
   <!-- Error -->
   {#if error}
-    <div class="error-banner">{error}</div>
+    <div class="px-3 py-2.5 text-xs text-destructive bg-destructive/10 rounded-lg text-center">
+      {error}
+    </div>
   {/if}
 
   <!-- Contrast Checker -->
@@ -186,27 +202,43 @@
 
   <!-- History with Compare Toggle -->
   {#if history.length > 0}
-    <section class="history">
-      <div class="history-header">
-        <span class="label">HISTORY</span>
-        <div class="header-actions">
+    <section class="flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <span class="text-[11px] font-medium text-muted-foreground tracking-wider">
+          HISTORY
+        </span>
+        <div class="flex gap-2">
           <button 
-            class="compare-btn" 
-            class:active={compareMode}
+            class={cn(
+              "text-[11px] font-medium px-2 py-0.5 rounded transition-all border",
+              compareMode
+                ? "text-primary-foreground bg-primary border-primary"
+                : "text-muted-foreground bg-transparent border-border hover:text-primary hover:border-primary"
+            )}
             onclick={toggleCompareMode}
             title="Compare two colors"
           >
             {compareMode ? 'Cancel' : 'Compare'}
           </button>
-          <button class="clear-btn" onclick={handleClearHistory}>Clear</button>
+          <button 
+            class="h-6 px-2 text-[11px] font-medium rounded transition-colors text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+            onclick={handleClearHistory}
+          >
+            Clear
+          </button>
         </div>
       </div>
-      <div class="history-grid">
+      
+      <div class="grid grid-cols-8 gap-1.5">
         {#each history as entry (entry.hex)}
           <button
-            class="history-swatch"
-            class:selected={!compareMode && currentColor === entry.hex}
-            class:compare-selected={isSelected(entry.hex)}
+            class={cn(
+              "aspect-square rounded-lg cursor-pointer transition-all border-[1.5px]",
+              !compareMode && currentColor === entry.hex && "border-primary shadow-[0_0_0_2px_hsl(var(--primary))] z-10",
+              isSelected(entry.hex) && "border-amber-400 shadow-[0_0_0_2px_rgb(251,191,36)] z-10",
+              !compareMode && currentColor !== entry.hex && !isSelected(entry.hex) && "border-border hover:scale-110 hover:shadow-md hover:z-10",
+              compareMode && !isSelected(entry.hex) && "border-border hover:scale-110 hover:shadow-md hover:z-10"
+            )}
             style="background-color: {entry.hex};"
             onclick={() => handleHistoryClick(entry.hex)}
             oncontextmenu={(e) => { if (!compareMode) { e.preventDefault(); handleRemove(entry.hex); } }}
@@ -216,250 +248,29 @@
           ></button>
         {/each}
       </div>
+      
       {#if compareMode}
-        <p class="compare-hint">Select two colors to compare their contrast ratio</p>
+        <p class="text-[11px] text-muted-foreground text-center m-0">
+          Select two colors to compare their contrast ratio
+        </p>
       {/if}
     </section>
   {/if}
 
   <!-- Empty State -->
   {#if !currentColor && history.length === 0}
-    <div class="empty">
-      <p>Pick your first color to get started</p>
-      <span class="shortcut">Ctrl + Shift + C</span>
+    <div class="flex flex-col items-center gap-2 py-6 px-4 text-muted-foreground">
+      <p class="text-sm m-0">Pick your first color to get started</p>
+      <span class="text-[11px] font-medium px-2 py-0.5 bg-muted rounded font-mono text-muted-foreground">
+        Ctrl + Shift + C
+      </span>
     </div>
   {/if}
 
   <!-- Footer -->
-  <footer>
-    <span class="shortcut-hint">Ctrl+Shift+C to open</span>
+  <footer class="flex justify-center pt-1">
+    <span class="text-[10px] text-muted-foreground opacity-60">
+      Ctrl+Shift+C to open
+    </span>
   </footer>
 </main>
-
-<style>
-  main {
-    --bg: #FFFFFF;
-    --bg-subtle: #F5F5F7;
-    --border: #E5E5EA;
-    --text: #1D1D1F;
-    --text-secondary: #86868B;
-    --accent: #0071E3;
-    --accent-hover: #0077ED;
-    --success: #34C759;
-    --premium: #FFD700;
-
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .premium-badge {
-    font-size: 9px;
-    font-weight: 700;
-    padding: 2px 6px;
-    background: linear-gradient(135deg, #ffd90083 0%, #ffa60083 100%);
-    color: #1D1D1F;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
-    margin-left: 4px;
-  }
-
-  .pick-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #FFFFFF;
-    background: var(--accent);
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .pick-btn:hover:not(:disabled) {
-    background: var(--accent-hover);
-    transform: translateY(-0.5px);
-    box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
-  }
-
-  .pick-btn:active:not(:disabled) {
-    transform: translateY(0);
-  }
-
-  .pick-btn:disabled {
-    opacity: 0.7;
-    cursor: wait;
-  }
-
-  .pick-btn svg {
-    stroke: #FFFFFF;
-  }
-
-  .error-banner {
-    padding: 10px 12px;
-    font-size: 12px;
-    color: #FF3B30;
-    background: rgba(255, 59, 48, 0.08);
-    border-radius: 8px;
-    text-align: center;
-  }
-
-  /* History with Compare Mode */
-  .history {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .history-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .label {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    letter-spacing: 0.5px;
-  }
-
-  .header-actions {
-    display: flex;
-    gap: 8px;
-  }
-
-  .compare-btn {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    background: none;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    padding: 3px 8px;
-    border-radius: 4px;
-    transition: all 0.15s ease;
-  }
-
-  .compare-btn:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .compare-btn.active {
-    color: #FFFFFF;
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .clear-btn {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: 4px;
-    transition: all 0.15s ease;
-  }
-
-  .clear-btn:hover {
-    color: #FF3B30;
-    background: rgba(255, 59, 48, 0.08);
-  }
-
-  .history-grid {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 6px;
-  }
-
-  .history-swatch {
-    aspect-ratio: 1;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    position: relative;
-  }
-
-  .history-swatch:hover {
-    transform: scale(1.12);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 1;
-  }
-
-  .history-swatch.selected {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px var(--accent);
-  }
-
-  .history-swatch.compare-selected {
-    border-color: var(--premium);
-    box-shadow: 0 0 0 2px var(--premium);
-  }
-
-  .compare-hint {
-    font-size: 11px;
-    color: var(--text-secondary);
-    text-align: center;
-    margin: 0;
-  }
-
-  .empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    padding: 24px 16px;
-    color: var(--text-secondary);
-  }
-
-  .empty p {
-    font-size: 13px;
-  }
-
-  .shortcut {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 3px 8px;
-    background: var(--bg-subtle);
-    border-radius: 4px;
-    color: var(--text-secondary);
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-  }
-
-  footer {
-    display: flex;
-    justify-content: center;
-    padding-top: 4px;
-  }
-
-  .shortcut-hint {
-    font-size: 10px;
-    color: var(--text-secondary);
-    opacity: 0.6;
-  }
-</style>

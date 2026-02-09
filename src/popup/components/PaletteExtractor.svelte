@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { extractPaletteFromPage, groupSimilarColors, type ExtractedColor } from '../../lib/paletteExtractor';
-  import { luminance } from '../../lib/colors';
+  import { extractPaletteFromPage, groupSimilarColors, type ExtractedColor } from '$lib/paletteExtractor';
+  import { luminance } from '$lib/colors';
+  import { cn } from '$lib/utils';
 
   interface Props {
     oncolorselect: (hex: string) => void;
@@ -56,19 +57,32 @@
   }
 </script>
 
-<section class="palette-extractor">
-  <div class="extractor-header">
-    <span class="label">PAGE PALETTE</span>
-    <label class="group-toggle">
-      <input type="checkbox" bind:checked={groupSimilar} />
+<section class="bg-muted/50 rounded-xl p-3 flex flex-col gap-3">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <span class="text-[11px] font-medium text-muted-foreground tracking-wider">
+      PAGE PALETTE
+    </span>
+    <label class="flex items-center gap-1.5 text-[11px] text-muted-foreground cursor-pointer">
+      <input type="checkbox" bind:checked={groupSimilar} class="cursor-pointer" />
       <span>Group similar</span>
     </label>
   </div>
 
+  <!-- Initial Extract Button -->
   {#if palette.length === 0 && !error}
-    <button class="extract-btn" onclick={extractPalette} disabled={extracting}>
+    <button 
+      class={cn(
+        "flex items-center justify-center gap-2 w-full py-2.5 px-3.5",
+        "text-sm font-semibold text-primary-foreground rounded-lg transition-all",
+        "bg-primary hover:bg-primary/90",
+        extracting ? "opacity-70 cursor-not-allowed" : "hover:-translate-y-0.5"
+      )}
+      onclick={extractPalette} 
+      disabled={extracting}
+    >
       {#if extracting}
-        <div class="spinner"></div>
+        <div class="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
         Extracting...
       {:else}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -81,32 +95,51 @@
         Extract Colors from Page
       {/if}
     </button>
-    <p class="hint">Extract all colors from the active tab</p>
+    <p class="text-[11px] text-muted-foreground text-center m-0">
+      Extract all colors from the active tab
+    </p>
   {/if}
 
+  <!-- Error State -->
   {#if error}
-    <div class="error-msg">{error}</div>
-    <button class="retry-btn" onclick={extractPalette}>Try Again</button>
+    <div class="px-2.5 py-2 text-xs text-destructive bg-destructive/10 rounded-md text-center">
+      {error}
+    </div>
+    <button 
+      class="px-3 py-1.5 text-xs font-medium text-primary bg-transparent border border-border rounded-md transition-colors hover:border-primary hover:bg-primary/5"
+      onclick={extractPalette}
+    >
+      Try Again
+    </button>
   {/if}
 
+  <!-- Palette Display -->
   {#if palette.length > 0}
-    <div class="palette-actions">
-      <span class="count">{palette.length} colors found</span>
-      <button class="clear-btn" onclick={() => palette = []}>Clear</button>
+    <div class="flex items-center justify-between">
+      <span class="text-[11px] font-medium text-foreground">
+        {palette.length} colors found
+      </span>
+      <button 
+        class="h-6 px-2 text-[11px] font-medium rounded-md transition-colors text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+        onclick={() => palette = []}
+      >
+        Clear
+      </button>
     </div>
 
-    <div class="palette-grid">
+    <!-- Palette Grid -->
+    <div class="grid grid-cols-4 gap-2">
       {#each palette as color (color.hex)}
         <button
-          class="palette-swatch"
+          class="aspect-square border-[1.5px] border-border rounded-lg cursor-pointer transition-all hover:scale-105 hover:shadow-md hover:z-10 flex flex-col items-center justify-center gap-0.5 p-1"
           style="background-color: {color.hex};"
           onclick={() => oncolorselect(color.hex)}
           title="{color.hex} • {getTypeLabel(color.type)} • {color.count} uses"
         >
-          <span class="type-icon">{getTypeIcon(color.type)}</span>
+          <span class="text-xs opacity-80">{getTypeIcon(color.type)}</span>
           <span 
-            class="swatch-label" 
-            style="color: {luminance(color.hex) > 0.6 ? '#1D1D1F' : '#FFFFFF'};"
+            class="text-[9px] font-semibold tracking-tight"
+            style="color: {luminance(color.hex) > 0.6 ? '#1D1D1F' : '#FFFFFF'}; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);"
           >
             {color.hex}
           </span>
@@ -114,201 +147,20 @@
       {/each}
     </div>
 
-    <button class="extract-btn secondary" onclick={extractPalette} disabled={extracting}>
+    <!-- Extract Again Button -->
+    <button 
+      class={cn(
+        "flex items-center justify-center gap-2 w-full py-2.5 px-3.5",
+        "text-sm font-semibold rounded-lg transition-all border",
+        "bg-background text-primary border-border",
+        extracting 
+          ? "opacity-70 cursor-not-allowed" 
+          : "hover:bg-muted hover:border-primary"
+      )}
+      onclick={extractPalette} 
+      disabled={extracting}
+    >
       {extracting ? 'Extracting...' : 'Extract Again'}
     </button>
   {/if}
 </section>
-
-<style>
-  .palette-extractor {
-    background: var(--bg-subtle);
-    border-radius: 12px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .extractor-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .label {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    letter-spacing: 0.5px;
-  }
-
-  .group-toggle {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--text-secondary);
-    cursor: pointer;
-  }
-
-  .group-toggle input {
-    cursor: pointer;
-  }
-
-  .extract-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 10px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #FFFFFF;
-    background: var(--accent);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .extract-btn:hover:not(:disabled) {
-    background: var(--accent-hover);
-    transform: translateY(-0.5px);
-  }
-
-  .extract-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-
-  .extract-btn.secondary {
-    background: #FFFFFF;
-    color: var(--accent);
-    border: 1px solid var(--border);
-  }
-
-  .extract-btn.secondary:hover:not(:disabled) {
-    background: var(--bg-subtle);
-    border-color: var(--accent);
-  }
-
-  .extract-btn svg {
-    stroke: currentColor;
-  }
-
-  .spinner {
-    width: 14px;
-    height: 14px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: #FFFFFF;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  .hint {
-    font-size: 11px;
-    color: var(--text-secondary);
-    text-align: center;
-    margin: 0;
-  }
-
-  .error-msg {
-    padding: 8px 10px;
-    font-size: 12px;
-    color: #FF3B30;
-    background: rgba(255, 59, 48, 0.08);
-    border-radius: 6px;
-    text-align: center;
-  }
-
-  .retry-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--accent);
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .retry-btn:hover {
-    border-color: var(--accent);
-    background: rgba(0, 113, 227, 0.05);
-  }
-
-  .palette-actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .count {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text);
-  }
-
-  .clear-btn {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 2px 4px;
-    border-radius: 4px;
-    transition: all 0.15s ease;
-  }
-
-  .clear-btn:hover {
-    color: #FF3B30;
-    background: rgba(255, 59, 48, 0.08);
-  }
-
-  .palette-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-
-  .palette-swatch {
-    aspect-ratio: 1;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    padding: 4px;
-  }
-
-  .palette-swatch:hover {
-    transform: scale(1.08);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 1;
-  }
-
-  .type-icon {
-    font-size: 12px;
-    opacity: 0.8;
-  }
-
-  .swatch-label {
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  }
-</style>

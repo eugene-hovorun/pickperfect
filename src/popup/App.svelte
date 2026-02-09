@@ -33,51 +33,11 @@
 </script>
 
 {#if isLoading}
-  <div class="loading">
-    <div class="spinner"></div>
+  <div class="flex items-center justify-center min-h-[200px] p-4">
+    <div class="w-6 h-6 border-[2.5px] border-border border-t-primary rounded-full animate-spin"></div>
   </div>
 {:else if isPremium}
   <PremiumPopup />
 {:else}
   <FreePopup />
 {/if}
-
-<style>
-  :global(*) {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  :global(body) {
-    width: 360px;
-    min-height: 200px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    background: #FFFFFF;
-    color: #1D1D1F;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 200px;
-    padding: 16px;
-  }
-
-  .spinner {
-    width: 24px;
-    height: 24px;
-    border: 2.5px solid #E5E5EA;
-    border-top-color: #0071E3;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-</style>
