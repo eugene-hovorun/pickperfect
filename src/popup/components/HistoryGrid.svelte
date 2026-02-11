@@ -5,12 +5,14 @@
   interface Props {
     history: ColorEntry[];
     currentColor: string | null;
+    copiedAll?: boolean;
     onselect: (hex: string) => void;
     onremove: (hex: string) => void;
     onclear: () => void;
+    oncopyall?: () => void;
   }
 
-  let { history, currentColor, onselect, onremove, onclear }: Props = $props();
+  let { history, currentColor, copiedAll = false, onselect, onremove, onclear, oncopyall }: Props = $props();
 
   function handleRemove(e: MouseEvent, hex: string) {
     e.preventDefault();
@@ -25,12 +27,22 @@
       <span class="text-[11px] font-medium text-muted-foreground tracking-wider">
         HISTORY
       </span>
-      <button
-        onclick={onclear}
-        class="h-6 px-2 text-[11px] font-medium rounded-md transition-colors text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-      >
-        Clear
-      </button>
+      <div class="flex items-center gap-1">
+        {#if oncopyall && history.length > 1}
+          <button
+            onclick={oncopyall}
+            class="h-6 px-2 text-[11px] font-medium rounded-md transition-colors text-muted-foreground hover:text-foreground hover:bg-accent"
+          >
+            {copiedAll ? 'Copied!' : 'Copy all'}
+          </button>
+        {/if}
+        <button
+          onclick={onclear}
+          class="h-6 px-2 text-[11px] font-medium rounded-md transition-colors text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+        >
+          Clear
+        </button>
+      </div>
     </div>
 
     <!-- Grid -->

@@ -1,8 +1,9 @@
 <script lang="ts">
   import ColorSwatch from './ColorSwatch.svelte';
   import HistoryGrid from './HistoryGrid.svelte';
+  import { formatColor, type ColorFormat } from '$lib/colors';
+  import { copyToClipboard } from '$lib/useColorPicker';
   import type { ColorEntry } from '$lib/storage';
-  import type { ColorFormat } from '$lib/colors';
 
   interface Props {
     currentColor: string | null;
@@ -25,6 +26,16 @@
     onremove, 
     onclear 
   }: Props = $props();
+
+  let copiedAll = $state(false);
+
+  async function copyAllHistory() {
+    if (history.length === 0) return;
+    const values = history.map((entry) => formatColor(entry.hex, format)).join(', ');
+    await copyToClipboard(values);
+    copiedAll = true;
+    setTimeout(() => (copiedAll = false), 1200);
+  }
 </script>
 
 <div class="flex flex-col gap-3">
@@ -40,9 +51,11 @@
   <HistoryGrid
     history={history}
     currentColor={currentColor}
+    copiedAll={copiedAll}
     onselect={onselect}
     onremove={onremove}
     onclear={onclear}
+    oncopyall={copyAllHistory}
   />
 
   {#if !currentColor && history.length === 0}

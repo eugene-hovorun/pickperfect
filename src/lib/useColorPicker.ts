@@ -3,7 +3,7 @@
 
 export const hasEyeDropper =
   typeof window !== "undefined" && "EyeDropper" in window;
-export const formats = ["hex", "rgb", "hsl"] as const;
+export const formats = ["hex", "rgb", "hsl", "oklch"] as const;
 
 /**
  * Opens EyeDropper and returns picked color hex
