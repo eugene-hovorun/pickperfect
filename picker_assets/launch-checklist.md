@@ -1,455 +1,249 @@
-# PickPerfect - Launch Checklist & Submission Guide
+# PickPerfect Launch Checklist
+
+> Chrome Web Store submission runbook for version `2.2.0`.
+
+## Release Snapshot
+
+| Item | Value |
+| --- | --- |
+| Product | PickPerfect |
+| Store category | Developer Tools |
+| Extension version | `2.2.0` |
+| Upload artifact | `pickperfect.zip` |
+| Build output | `dist/` |
+| Store assets folder | `picker_assets/` |
+| Project video | `https://youtu.be/17t8El4sDEI` |
+
+## Fast Path
+
+```bash
+npm run build
+npm run zip
+```
+
+Then upload `pickperfect.zip` in Chrome Web Store Developer Dashboard.
 
 ## Pre-Submission Checklist
 
-### ✅ Code & Build
+### Code & Build
 
-- [x] All features implemented and tested
-- [x] Premium features complete (contrast, Tailwind, palette)
+- [x] Free picking workflow implemented
+- [x] Premium features implemented
 - [x] ExtensionPay integrated
-- [x] Error handling for all edge cases
 - [x] Clipboard fallback implemented
-- [ ] **Build production version:** `npm run build`
-- [ ] **Test built extension** in Chrome (load unpacked from `dist/`)
-- [ ] **Test in Edge** (optional but recommended)
+- [x] Error handling added for core flows
+- [ ] `npm run build` completes without errors
+- [ ] Built extension loads from `dist/`
+- [ ] `npm run zip` creates `pickperfect.zip`
+- [ ] Zip contents are the files inside `dist/`, not a nested `dist/` folder
 
-### ✅ Assets - ALL READY
+### Store Assets
 
-- [x] Extension icons (16, 48, 128px) ✅
-- [x] Promo images:
-  - [x] Large promo tile (1400x560px) ✅
-  - [x] Small promo tile (440x280px) ✅
-- [x] Screenshots (3 images):
-  - [x] Hero screenshot (main UI) ✅
-  - [x] "Copied!" state screenshot ✅
-  - [x] Features overview screenshot ✅
+- [x] Runtime icons: `public/icons/icon-16.png`, `icon-48.png`, `icon-128.png`
+- [x] Store icon: `picker_assets/store-icon-128.png`
+- [x] Large promo tile: `picker_assets/hero_1400x560.png`
+- [x] Small promo tile: `picker_assets/hero_440x280.png`
+- [x] Screenshots:
+  - [x] `picker_assets/screenshot_1.png`
+  - [x] `picker_assets/screenshot_2.png`
+  - [x] `picker_assets/screenshot_3.png`
+  - [x] `picker_assets/screenshot_4.png`
 
-### ✅ Documentation - ALL UPDATED
+### Store Copy
 
-- [x] manifest.json with correct permissions ✅
-- [x] Store listing description ✅
-- [x] README.md updated ✅
-- [x] GUIDE.md updated ✅
+- [x] Store listing copy prepared in `picker_assets/store-listing.md`
+- [x] README updated
+- [x] Technical guide updated
+- [x] Project video linked: `https://youtu.be/17t8El4sDEI`
+- [ ] Release notes reviewed
+- [ ] Privacy policy URL ready
+- [ ] Support email confirmed
 
-### 🔄 Pre-Launch Setup (TODO)
+## Chrome Web Store Submission
 
-**1. ExtensionPay Account**
+### 1. Developer Account
 
-- [ ] Sign up at https://extensionpay.com
-- [ ] Create extension "pickperfect"
-- [ ] Connect Stripe account
-- [ ] Set price: $2.99 one-time
-- [ ] Test payment flow in development
+1. Open `https://chrome.google.com/webstore/devconsole`.
+2. Sign in with the publishing account.
+3. Confirm the developer account is active.
 
-**2. Privacy Policy**
+### 2. Package
 
-- [ ] Create simple privacy policy page
-- [ ] Host on GitHub Pages or similar
-- [ ] URL needed for Chrome Web Store listing
-- [ ] Template: "We don't collect any data. Period."
+1. Open the PickPerfect item.
+2. Go to **Package**.
+3. Upload `pickperfect.zip`.
+4. Confirm Chrome Web Store detects version `2.2.0`.
 
-**3. Support Contact**
+### 3. Store Listing
 
-- [ ] Set up support email (e.g., support@pickperfect.dev)
-- [ ] Or use Gmail if domain not ready yet
-- [ ] Add to manifest.json homepage_url (optional)
+| Field | Value |
+| --- | --- |
+| Name | PickPerfect - Color Picker for Developers |
+| Summary | Use the short description from `store-listing.md`. |
+| Description | Use the full description from `store-listing.md`. |
+| Category | Developer Tools |
+| Language | English |
 
----
+### 4. Graphic Assets
 
-## Chrome Web Store Submission Guide
+Upload:
 
-### Step 1: Create Developer Account
+- `picker_assets/store-icon-128.png`
+- `picker_assets/screenshot_1.png`
+- `picker_assets/screenshot_2.png`
+- `picker_assets/screenshot_3.png`
+- `picker_assets/screenshot_4.png`
+- `picker_assets/hero_440x280.png`
+- `picker_assets/hero_1400x560.png`
 
-1. Go to https://chrome.google.com/webstore/devconsole
-2. Pay $5 one-time developer registration fee
-3. Complete developer account setup
+### 5. Privacy Practices
 
-### Step 2: Create New Item
+Suggested wording:
 
-1. Click "New Item" in developer console
-2. Upload `dist.zip` (zip your entire `dist/` folder after build)
-3. Fill in store listing:
+```text
+PickPerfect's single purpose is color picking, color format conversion, and related developer color workflows.
 
-### Step 3: Store Listing Details
+The extension stores color history and preferences locally in Chrome extension storage. It does not collect, sell, transmit, or share personal data.
 
-**Product details:**
-
-```
-Name: PickPerfect — Color Picker for Developers
-Summary: Pick colors from any pixel. Copy as HEX, RGB, HSL instantly.
-Description: [Use store-listing.md content]
-Category: Developer Tools
-Language: English
-```
-
-**Graphic assets:**
-
-- Icon: `store-icon-128.png`
-- Screenshots: Upload all 3 screenshot PNG files
-- Promo images:
-  - Small tile: `promo-small-440x280.png`
-  - Marquee: `promo-marquee-1400x560.png`
-
-**Privacy practices:**
-
-```
-Single purpose: Color picking and format conversion
-Host permissions: Explain "activeTab for palette extraction only"
-Personal data: None collected
-Privacy policy: [Your hosted privacy policy URL]
+The activeTab and scripting permissions are used only when the user explicitly runs page palette extraction. No script runs persistently on every page.
 ```
 
-**Distribution:**
+Checklist:
 
+- [ ] Single purpose completed
+- [ ] Permission justification completed
+- [ ] Data usage set to no personal data collected
+- [ ] Privacy policy URL added
+- [ ] In-app purchase / payment disclosure completed
+
+### 6. Distribution
+
+- [ ] Visibility: Public
+- [ ] Regions: All countries, unless there is a reason to limit
+- [ ] Pricing: Free with in-app purchases
+- [ ] Submit for review
+
+## Smoke Test Matrix
+
+Run these before submission after loading `dist/` unpacked.
+
+| Test | Expected result |
+| --- | --- |
+| Open popup | UI opens without console errors. |
+| Pick color | EyeDropper opens and selected color appears in popup. |
+| Copy HEX | Clipboard contains `#RRGGBB`. |
+| Copy RGB | Clipboard contains `rgb(r, g, b)`. |
+| Copy HSL | Clipboard contains `hsl(h, s%, l%)`. |
+| History | New colors are stored and remain after reopening popup. |
+| Remove history item | Removed color disappears and stays removed. |
+| Tailwind tab | Nearest Tailwind color renders for selected color. |
+| Compare tab | Contrast ratio and AA/AAA badges update. |
+| Palette tab | Extraction runs only after clicking the feature control. |
+| Keyboard shortcut | `Ctrl+Shift+X` / `Command+Shift+X` opens the extension action. |
+
+## Release Notes
+
+Use this for Chrome Web Store submission notes:
+
+```text
+PickPerfect 2.2.0 updates the extension package and refreshes the Chrome Web Store screenshots and promotional assets.
 ```
-Visibility: Public
-Regions: All countries
-Pricing: Free with in-app purchases
-```
 
-### Step 4: Submit for Review
+## Common Rejection Risks
 
-1. Review all information
-2. Click "Submit for review"
-3. Wait 1-7 days for approval
+| Risk | Mitigation |
+| --- | --- |
+| Permission justification unclear | Explain `activeTab` and `scripting` are only for user-triggered palette extraction. |
+| Missing privacy policy | Add a hosted privacy policy URL before submission. |
+| Misleading screenshots | Use current UI screenshots only. |
+| Broad purpose | Keep wording focused on color picking and developer color workflows. |
+| Payment confusion | Clearly mark premium features as optional one-time upgrade. |
 
-**Expected timeline:**
+## If Review Fails
 
-- First review: 3-5 business days
-- If changes requested: 1-2 days to fix, 1-3 days for re-review
-- Total: 5-10 days to go live
+1. Read the rejection reason carefully.
+2. Fix only the specific issue called out.
+3. Update the package or listing as needed.
+4. Add a concise resubmission note explaining the fix.
+5. Resubmit.
 
----
+## Launch Content
 
-## Post-Submission Tasks
-
-### While Waiting for Approval
-
-**1. Prepare Launch Content**
-
-Reddit posts (draft in advance):
+### Reddit Draft
 
 ```markdown
-Title: I built PickPerfect - a color picker that doesn't break your React apps
+**Title:** [Launch] PickPerfect - a color picker that does not break your React apps
 
-Body:
-After using ColorZilla and having it break my Next.js SSR, I built a better color picker.
-
-Features:
-• Native EyeDropper API (zero DOM injection)
-• Actually working clipboard
-• WCAG contrast checker
-• Finds nearest Tailwind colors
-• Extract full page palettes
-
-Free on Chrome Web Store, $2.99 for premium features.
-
-No tracking, no ads, minimal permissions.
-
-[Link when approved]
-```
-
-Twitter/X thread:
-
-```
-I got tired of color pickers that:
-❌ Break React hydration
-❌ Have broken clipboards
-❌ Inject random DOM attributes
-❌ Turn into spyware (looking at you, Geco)
-
-So I built PickPerfect 🎯
-
-Thread on why it's different 👇
-
-1/ Uses Chrome's native EyeDropper API
-No content scripts = can't break your apps
-No "cz-shortcut-listen" attrs = no SSR errors
-
-2/ Premium features for developers:
-• WCAG contrast checker (AA/AAA)
-• Nearest Tailwind color finder
-• Page palette extraction
-
-All for $2.99 one-time (not $3/month like CSS Peeper)
-
-3/ Trust built-in:
-✅ Only 3 permissions (transparent)
-✅ No tracking
-✅ No ads
-✅ On-demand palette extraction only
-
-Get it free: [Chrome Web Store link]
-```
-
-**2. Create Product Hunt Submission**
-
-- [ ] Draft Product Hunt listing
-- [ ] Prepare demo GIF/video
-- [ ] Schedule launch for Tuesday-Thursday (best days)
-- [ ] Prepare tagline: "Color picker for developers that doesn't break your apps"
-
-**3. Prepare Landing Page (Optional)**
-
-- [ ] Buy pickperfect.dev domain
-- [ ] Simple one-pager with:
-  - Hero: "Color picker for developers"
-  - Problem: "Why other pickers suck"
-  - Solution: "How PickPerfect is different"
-  - Features showcase
-  - CTA: "Install from Chrome Web Store"
-  - SEO target: "best color picker chrome extension 2026"
-
----
-
-## Launch Day Checklist
-
-**When Extension is Approved:**
-
-### Day 1 - Launch
-
-- [ ] Extension live on Chrome Web Store ✅
-- [ ] Post to r/webdev
-- [ ] Post to r/frontend
-- [ ] Post to r/tailwindcss
-- [ ] Post to r/chrome
-- [ ] Tweet announcement
-- [ ] Submit to Product Hunt
-- [ ] Post on LinkedIn (if applicable)
-- [ ] Send to dev friends/colleagues
-
-### Day 2-3 - Engagement
-
-- [ ] Reply to all comments/questions
-- [ ] Monitor Chrome Web Store reviews
-- [ ] Fix any critical bugs immediately
-- [ ] Thank early adopters
-
-### Day 4-7 - Growth
-
-- [ ] Write Dev.to article: "Building a Better Color Picker"
-- [ ] Email web dev newsletters (optional)
-- [ ] Reach out to YouTube tech creators (optional)
-- [ ] Monitor ExtensionPay for first premium sales 💰
-
----
-
-## Marketing Copy Templates
-
-### Reddit Template
-
-```markdown
-**Title:** [Launch] PickPerfect - Color picker that won't break your React apps
-
-**Body:**
 Hey r/webdev!
 
-I just launched PickPerfect, a color picker extension I built after getting frustrated with existing options.
+I built PickPerfect after getting frustrated with color picker extensions that inject scripts, mutate the DOM, or make clipboard behavior unreliable.
 
-**The Problem:**
+**What it does:**
 
-- ColorZilla injects `cz-shortcut-listen` and breaks Next.js SSR
-- Eye Dropper's last update made picking impossible
-- Geco literally turned into spyware
-- None support Tailwind or accessibility checking
+- Uses Chrome's native EyeDropper API
+- Picks from the full screen, not only the browser
+- Copies HEX, RGB, and HSL
+- Keeps local color history
+- Premium adds WCAG contrast checks, Tailwind matching, and page palette extraction
 
-**My Solution:**
+No tracking, no ads, minimal permissions, Manifest V3.
 
-- Uses native Chrome EyeDropper API (zero DOM injection)
-- Clipboard that actually works (with fallback)
-- Premium: WCAG contrast checker, Tailwind color finder, palette extraction
-- $2.99 one-time (not subscription)
-
-**Tech Stack:**
-Svelte 5, TypeScript, Manifest V3, zero analytics/tracking
-
-Free on Chrome Web Store: [link]
-
-Open to feedback! Built this as a weekend project and happy to add features the community wants.
+Chrome Web Store: [link]
 ```
 
-### Product Hunt Template
+### Product Hunt Draft
 
 ```markdown
-**Tagline:** Color picker for developers that doesn't break your apps
+**Tagline:** Color picker for developers that does not break your apps
 
-**Description:**
-PickPerfect is a color picker extension built for developers who are tired of:
-• Broken clipboards
-• DOM injection breaking React/Next.js apps  
-• Ugly UIs from 2012
-• Extensions turning into spyware
+PickPerfect is a Chrome color picker built around the native EyeDropper API, minimal permissions, and developer-focused color workflows.
 
-Built with the native EyeDropper API, zero content scripts, and developer-focused premium features:
-• WCAG contrast checker for accessibility
-• Find nearest Tailwind CSS colors
-• Extract full page color palettes
-• All for $2.99 one-time
+It helps you pick colors from the full screen, copy them as HEX/RGB/HSL, check contrast, map colors to Tailwind, and extract page palettes on demand.
 
-No tracking. No ads. Minimal permissions. Just works.
+No tracking. No ads. No always-on content script for the core picker.
 
-**First Comment:**
-Hey PH! 👋
-
-I built PickPerfect after ColorZilla broke my Next.js app one too many times.
-
-Key differentiators:
-
-1. Native API = can't break your apps
-2. Tailwind integration (242 colors built-in)
-3. WCAG accessibility checking
-4. Privacy-first (no tracking, minimal permissions)
-
-The free tier gives you the core color picking. Premium ($2.99 one-time) unlocks the developer workflow features.
-
-Would love your feedback! What other features would make this indispensable for you?
+Demo video: https://youtu.be/17t8El4sDEI
 ```
 
----
+### X / Twitter Draft
 
-## Success Metrics to Track
+```text
+I built PickPerfect because I wanted a color picker that did not inject random DOM changes into the apps I was debugging.
 
-### Week 1
+Native EyeDropper API.
+HEX/RGB/HSL copy.
+Local history.
+WCAG contrast checks.
+Tailwind color matching.
+No tracking.
 
-- [ ] 100+ installs
-- [ ] 4.0+ star rating
-- [ ] 5+ Chrome Web Store reviews
-- [ ] 1+ premium sales
+Chrome Web Store: [link]
+```
 
-### Month 1
+## Post-Launch Monitoring
 
-- [ ] 1,000+ installs
-- [ ] 4.5+ star rating
-- [ ] 20+ reviews
-- [ ] 10+ premium sales ($30)
-- [ ] <10% uninstall rate
+| Window | Watch |
+| --- | --- |
+| First 24 hours | Install count, reviews, rejection/approval status, payment issues |
+| First week | Uninstall trend, bug reports, CWS rating, premium conversion |
+| First month | Review quality, common feature requests, support load |
 
-### Month 3
+## Growth Experiments
 
-- [ ] 5,000+ installs
-- [ ] 4.5+ star rating maintained
-- [ ] 50+ reviews
-- [ ] 100+ premium sales ($300)
-- [ ] Featured on at least one blog/newsletter
+- Add a landing page targeting "developer color picker Chrome extension".
+- Publish a short technical article about using the EyeDropper API safely.
+- Share Tailwind matching demos.
+- Ask early users for reviews after the first successful workflow.
+- Consider Edge Add-ons after Chrome Web Store validation.
 
----
+## Final Gate
 
-## Common Rejection Reasons & How to Avoid
+Submit only when all of these are true:
 
-**1. Unclear permission justification**
-
-- ✅ Fixed: Store listing clearly explains why we need activeTab/scripting
-- Mention: "activeTab and scripting only for on-demand palette extraction"
-
-**2. Privacy policy missing**
-
-- ⚠️ TODO: Host simple privacy policy before submission
-- Template: "We don't collect any data. Colors stay local. No tracking."
-
-**3. Misleading screenshots**
-
-- ✅ Fixed: Screenshots show actual extension UI, no mockups
-
-**4. Single purpose violation**
-
-- ✅ Not an issue: Extension has clear single purpose (color picking)
-
-**5. Spam/keyword stuffing**
-
-- ✅ Fixed: Description is natural, no keyword spam
-
----
-
-## Emergency Response Plan
-
-**If Extension Gets Rejected:**
-
-1. **Read rejection email carefully**
-2. **Fix the specific issue mentioned**
-3. **Document the fix in resubmission notes**
-4. **Resubmit within 24 hours**
-5. **Usually approved on second review**
-
-**If Critical Bug Found After Launch:**
-
-1. **Fix immediately in codebase**
-2. **Build new version, bump version number in manifest**
-3. **Submit update to Chrome Web Store**
-4. **Post update in Chrome Web Store reviews**
-5. **Update affected users via reviews**
-
-**If ExtensionPay Issues:**
-
-1. **Test payment flow before launch**
-2. **Have backup plan: Stripe Checkout**
-3. **ExtensionPay support is responsive**
-
----
-
-## Final Pre-Launch Checklist
-
-**Code:**
-
-- [ ] `npm run build` completes without errors
-- [ ] Dist folder is clean and complete
-- [ ] ExtPay.js is copied to dist/
-- [ ] All assets are in dist/icons/
-
-**Testing:**
-
-- [ ] Load unpacked extension works
-- [ ] Eyedropper picks colors correctly
-- [ ] Clipboard copies in all formats
-- [ ] History persists across sessions
-- [ ] Premium check flow works (mock with ExtensionPay trial)
-- [ ] Contrast checker calculates correctly
-- [ ] Tailwind matching finds correct colors
-- [ ] Palette extraction works on various sites
-
-**Store Listing:**
-
-- [ ] All text reviewed for typos
-- [ ] Screenshots uploaded
-- [ ] Promo images uploaded
-- [ ] Privacy policy URL ready
-- [ ] Support email set
-
-**Ready to submit!** 🚀
-
----
-
-## Post-Launch Next Steps
-
-### If Successful (1,000+ installs in Month 1)
-
-**Double down:**
-
-- Add requested features from reviews
-- Create landing page with SEO
-- Write technical blog post
-- Reach out to Tailwind team for potential feature
-- Consider Firefox/Edge versions
-
-### If Slow Start (<100 installs in Week 1)
-
-**Iterate:**
-
-- Improve store listing copy
-- Better screenshots showing value
-- More aggressive Reddit posting
-- Free trial of premium features?
-- A/B test pricing ($1.99 vs $2.99)
-
-### If Premium Conversion is Low (<1%)
-
-**Investigate:**
-
-- Are people seeing premium features?
-- Is $2.99 too high?
-- Is value prop clear?
-- Consider time-limited discount for early adopters
-- Add more premium features to justify price
-
----
-
-**You're ready to launch! All assets are complete and professional. Good luck! 🎯**
+- [ ] `pickperfect.zip` exists
+- [ ] `public/manifest.json` says `2.2.0`
+- [ ] The built extension opens in Chrome
+- [ ] Core picker and copy flow work
+- [ ] Store screenshots match the current UI
+- [ ] Privacy policy URL is ready
+- [ ] Support contact is ready

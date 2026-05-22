@@ -1,93 +1,140 @@
 # Chrome Web Store Listing
 
-## Title
+> Ready-to-paste Chrome Web Store copy for PickPerfect.
 
-PickPerfect — Color Picker for Developers
+## Listing Metadata
 
-## Short Description (132 chars max)
+| Field | Value |
+| --- | --- |
+| Name | PickPerfect - Color Picker for Developers |
+| Category | Developer Tools |
+| Language | English |
+| Pricing | Free with in-app purchase |
+| Current extension version | 2.2.0 |
+| Project video | https://youtu.be/17t8El4sDEI |
 
-Pick colors from anywhere on your screen. Copy as HEX, RGB, HSL instantly. Native API — zero bloat, zero DOM injection, zero tracking.
+## Short Description
 
-## Description
+Pick colors from anywhere on screen. Copy HEX, RGB, HSL instantly. Native API, minimal permissions, zero tracking.
 
-PickPerfect is a fast, lightweight color picker built for developers and designers who want one thing: pick a color and copy it — instantly.
+## Full Description
 
-**PICK FROM ENTIRE SCREEN, NOT JUST BROWSER**
-Unlike most color pickers that only work within the browser, PickPerfect uses Chrome's native EyeDropper API to pick colors from ANYWHERE on your screen — including other apps, desktop, images, videos, PDFs, everything.
+PickPerfect is a fast, lightweight color picker for developers and designers who want one thing: pick a color and copy it instantly.
 
-**ZERO DOM INJECTION = ZERO PROBLEMS**
-Other color picker extensions inject content scripts that:
-→ Break React/Next.js SSR hydration
-→ Add weird attributes like "cz-shortcut-listen" to your HTML
-→ Slow down page loads
-→ Break production builds
+Project video: https://youtu.be/17t8El4sDEI
 
-PickPerfect uses the native EyeDropper API built into Chrome. This means:
-→ Zero content scripts injected into your pages
-→ Zero DOM modification — can't break any web app
-→ No interference with React, Vue, Angular, or any framework
-→ Minimal permissions — fully transparent
+## Pick From The Entire Screen
 
-**HOW IT WORKS**
+Most color pickers only work inside the browser window. PickPerfect uses Chrome's native EyeDropper API, so you can pick colors from:
 
-1. Click the extension icon or press Ctrl+Shift+X
-2. Click any pixel anywhere on your screen
-3. Color is copied to your clipboard — done
+- Websites
+- Images
+- Videos
+- PDFs
+- Design files
+- Desktop apps
+- Anywhere visible on your screen
 
-**FREE FEATURES**
-• Pick any color from your entire screen (not just browser!)
-• Copy as HEX, RGB, or HSL with one click
-• Format preference saved across sessions
-• Color history saves your last 20 picks (persisted)
-• Right-click any saved color to remove it
-• Clean, tabbed UI — organized by feature
-• Keyboard shortcut: Ctrl+Shift+X (customizable)
+## No DOM Injection
 
-**PREMIUM FEATURES ($2.99 one-time)**
-• **WCAG Contrast Checker** — Compare two colors for accessibility compliance (AA/AAA ratings for large/normal text)
-• **Tailwind Color Mapping** — Find the nearest Tailwind CSS color from 242 colors with match accuracy %
-• **Page Palette Extraction** — Extract all colors from any webpage with smart grouping and type detection (background/text/border)
+Some color picker extensions inject scripts or attributes into every page you visit. That can break React hydration, interfere with frontend frameworks, slow down pages, or create confusing debug output.
 
-Perfect for design system analysis, accessibility audits, and Tailwind workflows.
+PickPerfect keeps the core picking flow native:
 
-**WHY PICKPERFECT?**
+- No always-on content script
+- No DOM mutation for color picking
+- No framework interference
+- No broad `<all_urls>` permission
+- No tracking, ads, or analytics
 
-If you've used other color pickers, you've probably experienced:
-❌ Broken clipboard functionality
-❌ Injected DOM elements breaking your app
-❌ Ugly, cluttered UI
-❌ Surprise ads or tracking
-❌ Limited to browser window only
+## How It Works
 
-PickPerfect fixes all of that.
+1. Click the PickPerfect icon or press `Ctrl+Shift+X`.
+2. Click any visible pixel on your screen.
+3. Copy the color as `HEX`, `RGB`, or `HSL`.
+4. Reuse previous colors from your local history.
 
-**TRUST IS A FEATURE**
-• Transparent permissions (storage for history, activeTab/scripting for palette extraction only)
-• No tracking, no analytics, no ads
-• No data collection of any kind
-• Chrome Manifest V3 — latest security standards
-• Palette extraction runs on-demand only (never in background)
-• Open development process
+## Free Features
 
-**TECHNICAL DETAILS**
-• Built with Svelte 5 + Tailwind CSS
-• ~40KB minified bundle (tiny!)
-• Zero custom CSS frameworks
-• Requires Chrome 95+ (for EyeDropper API support)
-• Works on all operating systems (Windows, Mac, Linux, ChromeOS)
+- Pick any color from your entire screen
+- Copy as `HEX`, `RGB`, or `HSL`
+- Save the last 20 picked colors
+- Keep your preferred copy format between sessions
+- Remove saved colors from history
+- Use the keyboard shortcut `Ctrl+Shift+X`
+- Work with a clean, focused popup UI
 
-**KEYBOARD SHORTCUT**
-Default: Ctrl+Shift+X
-Customize at: chrome://extensions/shortcuts
+## Premium Features
+
+PickPerfect Premium is a one-time upgrade for deeper frontend and design-system work.
+
+### WCAG Contrast Checker
+
+Compare two colors and instantly see accessibility results for normal and large text, including AA and AAA ratings.
+
+### Tailwind Color Mapping
+
+Find the nearest Tailwind CSS color from the bundled palette and copy class-ready values for faster implementation.
+
+### Page Palette Extraction
+
+Extract colors from the current page on demand, group similar shades, and identify likely background, text, and border usage.
+
+## Why Developers Use PickPerfect
+
+PickPerfect is built for people who have been burned by color pickers that:
+
+- Break app markup
+- Inject unexpected page attributes
+- Ship cluttered interfaces
+- Have unreliable clipboard behavior
+- Add ads, tracking, or suspicious updates
+- Work only inside the browser viewport
+
+PickPerfect focuses on a smaller, cleaner promise: accurate color picking, reliable copying, minimal permissions, and developer-friendly extras.
+
+## Privacy
+
+PickPerfect does not collect personal data.
+
+- No tracking
+- No analytics
+- No ads
+- No background page scanning
+- No uploaded color history
+- Palette extraction runs only when you request it
+
+Your color history and preferences stay in Chrome's local extension storage.
+
+## Technical Details
+
+- Built with Svelte 5 and TypeScript
+- Styled with Tailwind CSS
+- Chrome Manifest V3 extension
+- Uses Chrome's native EyeDropper API
+- Requires Chrome 95 or newer
+- Payment flow powered by ExtensionPay
+
+## Keyboard Shortcut
+
+Default shortcut:
+
+```text
+Ctrl+Shift+X
+```
+
+You can customize it here:
+
+```text
+chrome://extensions/shortcuts
+```
 
 ---
 
 Built for developers who value clean code, minimal permissions, and tools that just work.
 
-## Category
+## Release Notes: 2.2.0
 
-Developer Tools
-
-## Language
-
-English
+```text
+Updated the extension package and refreshed the Chrome Web Store visual assets for the 2.2.0 release.
+```
