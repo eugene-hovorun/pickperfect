@@ -161,7 +161,7 @@ Extracted 6 shared components to eliminate duplication:
 ✅ EyeDropper (entire screen, not just browser)  
 ✅ One-click copy (HEX/RGB/HSL)  
 ✅ Color history (20 colors)  
-✅ Keyboard shortcut (`Ctrl+Shift+C`)  
+✅ Keyboard shortcut (`Ctrl+Shift+X`)  
 ✅ Tabbed UI
 
 ### Premium Tier ($2.99)

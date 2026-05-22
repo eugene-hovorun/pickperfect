@@ -11,7 +11,7 @@ Built with **Svelte 5 + Tailwind CSS** for a clean, maintainable codebase.
 - 🎯 Pick colors from **entire screen** (not just browser)
 - 📋 One-click copy: HEX, RGB, HSL
 - 🕐 History (20 colors, persisted)
-- ⌨️ Keyboard shortcut: `Ctrl+Shift+C`
+- ⌨️ Keyboard shortcut: `Ctrl+Shift+X`
 
 **Premium ($2.99 one-time):**
 

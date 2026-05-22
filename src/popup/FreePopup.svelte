@@ -137,7 +137,7 @@
 
   <footer class="flex justify-center py-2 border-t border-border">
     <span class="text-[10px] text-muted-foreground opacity-60">
-      Ctrl+Shift+C to open
+      Ctrl+Shift+X to open
     </span>
   </footer>
 </main>

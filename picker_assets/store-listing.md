@@ -30,7 +30,7 @@ PickPerfect uses the native EyeDropper API built into Chrome. This means:
 
 **HOW IT WORKS**
 
-1. Click the extension icon or press Ctrl+Shift+C
+1. Click the extension icon or press Ctrl+Shift+X
 2. Click any pixel anywhere on your screen
 3. Color is copied to your clipboard — done
 
@@ -41,7 +41,7 @@ PickPerfect uses the native EyeDropper API built into Chrome. This means:
 • Color history saves your last 20 picks (persisted)
 • Right-click any saved color to remove it
 • Clean, tabbed UI — organized by feature
-• Keyboard shortcut: Ctrl+Shift+C (customizable)
+• Keyboard shortcut: Ctrl+Shift+X (customizable)
 
 **PREMIUM FEATURES ($2.99 one-time)**
 • **WCAG Contrast Checker** — Compare two colors for accessibility compliance (AA/AAA ratings for large/normal text)
@@ -77,7 +77,7 @@ PickPerfect fixes all of that.
 • Works on all operating systems (Windows, Mac, Linux, ChromeOS)
 
 **KEYBOARD SHORTCUT**
-Default: Ctrl+Shift+C
+Default: Ctrl+Shift+X
 Customize at: chrome://extensions/shortcuts
 
 ---
