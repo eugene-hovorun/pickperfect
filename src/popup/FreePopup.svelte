@@ -1,6 +1,11 @@
 <script lang="ts">
-  import { formatColor, type ColorFormat } from '$lib/colors';
-  import { hasEyeDropper, formats, pickColorFromScreen, copyToClipboard as copyText } from '$lib/useColorPicker';
+  import { formatColor, type ColorFormat } from "$lib/colors";
+  import {
+    hasEyeDropper,
+    formats,
+    pickColorFromScreen,
+    copyToClipboard as copyText,
+  } from "$lib/useColorPicker";
   import {
     getHistory,
     addToHistory,
@@ -8,25 +13,26 @@
     removeFromHistory,
     getFormat,
     setFormat,
+    getTab,
+    setTab,
     type ColorEntry,
-  } from '$lib/storage';
-  import Header from './components/Header.svelte';
-  import PickButton from './components/PickButton.svelte';
-  import Tabs from './components/Tabs.svelte';
-  import ColorTab from './components/ColorTab.svelte';
-  import UpgradePrompt from './components/UpgradePrompt.svelte';
-  import ExtPay from 'extpay';
-
-  type Tab = 'color' | 'tailwind' | 'compare' | 'palette';
+    type Tab,
+  } from "$lib/storage";
+  import Header from "./components/Header.svelte";
+  import PickButton from "./components/PickButton.svelte";
+  import Tabs from "./components/Tabs.svelte";
+  import ColorTab from "./components/ColorTab.svelte";
+  import UpgradePrompt from "./components/UpgradePrompt.svelte";
+  import ExtPay from "extpay";
 
   // State
   let currentColor = $state<string | null>(null);
   let history = $state<ColorEntry[]>([]);
-  let format = $state<ColorFormat>('hex');
+  let format = $state<ColorFormat>("hex");
   let copied = $state(false);
   let picking = $state(false);
   let error = $state<string | null>(null);
-  let activeTab = $state<Tab>('color');
+  let activeTab = $state<Tab>("color");
 
   // Initialize
   $effect(() => {
@@ -35,6 +41,10 @@
       const savedFormat = await getFormat();
       if (formats.includes(savedFormat as ColorFormat)) {
         format = savedFormat as ColorFormat;
+      }
+      const savedTab = await getTab();
+      if (["color", "tailwind", "compare", "palette"].includes(savedTab)) {
+        activeTab = savedTab as Tab;
       }
       if (!currentColor && history.length > 0) {
         currentColor = history[0].hex;
@@ -52,10 +62,9 @@
       currentColor = hex;
       history = await addToHistory(hex);
       await handleCopy(formatColor(hex, format));
-      activeTab = 'color';
     } catch (e: any) {
-      if (e?.name !== 'AbortError') {
-        error = 'Failed to pick color';
+      if (e?.name !== "AbortError") {
+        error = "Failed to pick color";
       }
     } finally {
       picking = false;
@@ -91,34 +100,31 @@
   }
 
   function openUpgrade() {
-    const extpay = ExtPay('pickperfect');
+    const extpay = ExtPay("pickperfect");
     extpay.openPaymentPage();
   }
 </script>
 
 <main class="flex flex-col h-full">
-  <Header 
-    formats={formats} 
-    currentFormat={format} 
-    onformatchange={switchFormat}
-  />
+  <Header {formats} currentFormat={format} onformatchange={switchFormat} />
 
-  <PickButton 
-    picking={picking}
-    hasEyeDropper={hasEyeDropper}
-    error={error}
-    onpick={pickColor}
-  />
+  <PickButton {picking} {hasEyeDropper} {error} onpick={pickColor} />
 
-  <Tabs activeTab={activeTab} onchange={(tab) => activeTab = tab} />
+  <Tabs
+    {activeTab}
+    onchange={async (tab) => {
+      activeTab = tab;
+      await setTab(tab);
+    }}
+  />
 
   <div class="flex-1 overflow-y-auto p-4 pt-3" style="max-height: 400px;">
-    {#if activeTab === 'color'}
-      <ColorTab 
-        currentColor={currentColor}
-        history={history}
-        format={format}
-        copied={copied}
+    {#if activeTab === "color"}
+      <ColorTab
+        {currentColor}
+        {history}
+        {format}
+        {copied}
         oncopy={() => handleCopy(formatColor(currentColor!, format))}
         onselect={selectFromHistory}
         onremove={handleRemove}

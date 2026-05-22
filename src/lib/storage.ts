@@ -3,6 +3,8 @@ export interface ColorEntry {
   timestamp: number;
 }
 
+export type Tab = "color" | "tailwind" | "compare" | "palette";
+
 const HISTORY_KEY = "pp_history";
 const FORMAT_KEY = "pp_format";
 const MAX_HISTORY = 20;
@@ -79,4 +81,13 @@ export async function setFormat(format: string): Promise<void> {
   if (s) {
     await s.set({ [FORMAT_KEY]: format } as FormatStorage);
   }
+}
+
+export async function getTab(): Promise<Tab> {
+  const result = await chrome.storage.local.get("activeTab");
+  return (result.activeTab as Tab) ?? "color";
+}
+
+export async function setTab(tab: Tab): Promise<void> {
+  await chrome.storage.local.set({ activeTab: tab });
 }

@@ -1,6 +1,11 @@
 <script lang="ts">
-  import { formatColor, type ColorFormat } from '$lib/colors';
-  import { hasEyeDropper, formats, pickColorFromScreen, copyToClipboard as copyText } from '$lib/useColorPicker';
+  import { formatColor, type ColorFormat } from "$lib/colors";
+  import {
+    hasEyeDropper,
+    formats,
+    pickColorFromScreen,
+    copyToClipboard as copyText,
+  } from "$lib/useColorPicker";
   import {
     getHistory,
     addToHistory,
@@ -8,26 +13,27 @@
     removeFromHistory,
     getFormat,
     setFormat,
+    getTab,
+    setTab,
+    type Tab,
     type ColorEntry,
-  } from '$lib/storage';
-  import Header from './components/Header.svelte';
-  import PickButton from './components/PickButton.svelte';
-  import Tabs from './components/Tabs.svelte';
-  import ColorTab from './components/ColorTab.svelte';
-  import CompareTab from './components/CompareTab.svelte';
-  import TailwindMatch from './components/TailwindMatch.svelte';
-  import PaletteExtractor from './components/PaletteExtractor.svelte';
-
-  type Tab = 'color' | 'tailwind' | 'compare' | 'palette';
+  } from "$lib/storage";
+  import Header from "./components/Header.svelte";
+  import PickButton from "./components/PickButton.svelte";
+  import Tabs from "./components/Tabs.svelte";
+  import ColorTab from "./components/ColorTab.svelte";
+  import CompareTab from "./components/CompareTab.svelte";
+  import TailwindMatch from "./components/TailwindMatch.svelte";
+  import PaletteExtractor from "./components/PaletteExtractor.svelte";
 
   // State
   let currentColor = $state<string | null>(null);
   let history = $state<ColorEntry[]>([]);
-  let format = $state<ColorFormat>('hex');
+  let format = $state<ColorFormat>("hex");
   let copied = $state(false);
   let picking = $state(false);
   let error = $state<string | null>(null);
-  let activeTab = $state<Tab>('color');
+  let activeTab = $state<Tab>("color");
   let selectedColors = $state<string[]>([]);
 
   // Initialize
@@ -37,6 +43,10 @@
       const savedFormat = await getFormat();
       if (formats.includes(savedFormat as ColorFormat)) {
         format = savedFormat as ColorFormat;
+      }
+      const savedTab = await getTab();
+      if (["color", "tailwind", "compare", "palette"].includes(savedTab)) {
+        activeTab = savedTab as Tab;
       }
       if (!currentColor && history.length > 0) {
         currentColor = history[0].hex;
@@ -54,10 +64,9 @@
       currentColor = hex;
       history = await addToHistory(hex);
       await handleCopy(formatColor(hex, format));
-      activeTab = 'color';
     } catch (e: any) {
-      if (e?.name !== 'AbortError') {
-        error = 'Failed to pick color';
+      if (e?.name !== "AbortError") {
+        error = "Failed to pick color";
       }
     } finally {
       picking = false;
@@ -94,7 +103,7 @@
 
   function handleCompareSelect(hex: string) {
     if (selectedColors.includes(hex)) {
-      selectedColors = selectedColors.filter(c => c !== hex);
+      selectedColors = selectedColors.filter((c) => c !== hex);
     } else if (selectedColors.length < 2) {
       selectedColors = [...selectedColors, hex];
     } else {
@@ -106,61 +115,60 @@
     currentColor = hex;
     history = await addToHistory(hex);
     await handleCopy(formatColor(hex, format));
-    activeTab = 'color';
+    activeTab = "color";
   }
 
   // Reset selected colors when switching tabs
   $effect(() => {
-    if (activeTab !== 'compare') {
+    if (activeTab !== "compare") {
       selectedColors = [];
     }
   });
 </script>
 
 <main class="flex flex-col h-full">
-  <Header 
-    formats={formats} 
-    currentFormat={format} 
+  <Header
+    {formats}
+    currentFormat={format}
     onformatchange={switchFormat}
     isPremium={true}
   />
 
-  <PickButton 
-    picking={picking}
-    hasEyeDropper={hasEyeDropper}
-    error={error}
-    onpick={pickColor}
+  <PickButton {picking} {hasEyeDropper} {error} onpick={pickColor} />
+
+  <Tabs
+    {activeTab}
+    onchange={async (tab) => {
+      activeTab = tab;
+      await setTab(tab);
+    }}
   />
 
-  <Tabs activeTab={activeTab} onchange={(tab) => activeTab = tab} />
-
   <div class="flex-1 overflow-y-auto p-4 pt-3" style="max-height: 400px;">
-    {#if activeTab === 'color'}
-      <ColorTab 
-        currentColor={currentColor}
-        history={history}
-        format={format}
-        copied={copied}
+    {#if activeTab === "color"}
+      <ColorTab
+        {currentColor}
+        {history}
+        {format}
+        {copied}
         oncopy={() => handleCopy(formatColor(currentColor!, format))}
         onselect={selectFromHistory}
         onremove={handleRemove}
         onclear={handleClearHistory}
       />
-    {:else if activeTab === 'tailwind'}
+    {:else if activeTab === "tailwind"}
       {#if currentColor}
         <TailwindMatch color={currentColor} />
       {:else}
-        <div class="flex flex-col items-center gap-2 py-12 text-muted-foreground">
+        <div
+          class="flex flex-col items-center gap-2 py-12 text-muted-foreground"
+        >
           <p class="text-sm m-0">Pick a color to see Tailwind matches</p>
         </div>
       {/if}
-    {:else if activeTab === 'compare'}
-      <CompareTab 
-        history={history}
-        selectedColors={selectedColors}
-        onselect={handleCompareSelect}
-      />
-    {:else if activeTab === 'palette'}
+    {:else if activeTab === "compare"}
+      <CompareTab {history} {selectedColors} onselect={handleCompareSelect} />
+    {:else if activeTab === "palette"}
       <PaletteExtractor oncolorselect={handlePaletteColorSelect} />
     {/if}
   </div>
