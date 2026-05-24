@@ -141,7 +141,7 @@
     "message": "升级至 Premium"
   },
   "premiumPrice": {
-    "message": "$2.99 一次性"
+    "message": "$$2.99 一次性"
   },
   "premiumBadge": {
     "message": "✨ Premium"

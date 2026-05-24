@@ -141,7 +141,7 @@
     "message": "Actualizar a Premium"
   },
   "premiumPrice": {
-    "message": "$2.99 una vez"
+    "message": "$$2.99 una vez"
   },
   "premiumBadge": {
     "message": "✨ Premium"

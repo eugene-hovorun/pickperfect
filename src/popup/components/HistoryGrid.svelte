@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { cn } from '$lib/utils';
-  import type { ColorEntry } from '$lib/storage';
+  import { cn } from "$lib/utils";
+  import type { ColorEntry } from "$lib/storage";
+  import { t } from "$lib/i18n";
 
   interface Props {
     history: ColorEntry[];
@@ -12,7 +13,15 @@
     oncopyall?: () => void;
   }
 
-  let { history, currentColor, copiedAll = false, onselect, onremove, onclear, oncopyall }: Props = $props();
+  let {
+    history,
+    currentColor,
+    copiedAll = false,
+    onselect,
+    onremove,
+    onclear,
+    oncopyall,
+  }: Props = $props();
 
   function handleRemove(e: MouseEvent, hex: string) {
     e.preventDefault();
@@ -22,10 +31,11 @@
 
 {#if history.length > 0}
   <section class="flex flex-col gap-2">
-    <!-- Header -->
     <div class="flex items-center justify-between">
-      <span class="text-[11px] font-medium text-muted-foreground tracking-wider">
-        HISTORY
+      <span
+        class="text-[11px] font-medium text-muted-foreground tracking-wider"
+      >
+        {t("historyTitle")}
       </span>
       <div class="flex items-center gap-1">
         {#if oncopyall && history.length > 1}
@@ -33,19 +43,18 @@
             onclick={oncopyall}
             class="h-6 px-2 text-[11px] font-medium rounded-md transition-colors text-muted-foreground hover:text-foreground hover:bg-accent"
           >
-            {copiedAll ? 'Copied!' : 'Copy all'}
+            {copiedAll ? t("copied") : t("copyAll")}
           </button>
         {/if}
         <button
           onclick={onclear}
           class="h-6 px-2 text-[11px] font-medium rounded-md transition-colors text-muted-foreground hover:text-destructive hover:bg-destructive/10"
         >
-          Clear
+          {t("clear")}
         </button>
       </div>
     </div>
 
-    <!-- Grid -->
     <div class="grid grid-cols-8 gap-1.5">
       {#each history as entry (entry.hex)}
         <button
@@ -54,12 +63,12 @@
             "border-[1.5px]",
             currentColor === entry.hex
               ? "border-primary shadow-[0_0_0_2px_hsl(var(--primary))] z-10"
-              : "border-border hover:scale-110 hover:shadow-md hover:z-10"
+              : "border-border hover:scale-110 hover:shadow-md hover:z-10",
           )}
           style="background-color: {entry.hex};"
           onclick={() => onselect(entry.hex)}
           oncontextmenu={(e) => handleRemove(e, entry.hex)}
-          title="{entry.hex} — right-click to remove"
+          title="{entry.hex} — {t('historyRightClickRemove')}"
         ></button>
       {/each}
     </div>

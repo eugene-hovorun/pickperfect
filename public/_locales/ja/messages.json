@@ -141,7 +141,7 @@
     "message": "Premiumにアップグレード"
   },
   "premiumPrice": {
-    "message": "$2.99 買い切り"
+    "message": "$$2.99 買い切り"
   },
   "premiumBadge": {
     "message": "✨ Premium"

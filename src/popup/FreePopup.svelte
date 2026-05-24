@@ -24,6 +24,7 @@
   import ColorTab from "./components/ColorTab.svelte";
   import UpgradePrompt from "./components/UpgradePrompt.svelte";
   import ExtPay from "extpay";
+  import { t } from "$lib/i18n";
 
   // State
   let currentColor = $state<string | null>(null);
@@ -63,9 +64,7 @@
       history = await addToHistory(hex);
       await handleCopy(formatColor(hex, format));
     } catch (e: any) {
-      if (e?.name !== "AbortError") {
-        error = "Failed to pick color";
-      }
+      if (e?.name !== "AbortError") error = t("failedToPickColor");
     } finally {
       picking = false;
     }
@@ -137,7 +136,7 @@
 
   <footer class="flex justify-center py-2 border-t border-border">
     <span class="text-[10px] text-muted-foreground opacity-60">
-      Ctrl+Shift+X to open
+      {t("shortcutHint")}
     </span>
   </footer>
 </main>

@@ -141,7 +141,7 @@
     "message": "Passa a Premium"
   },
   "premiumPrice": {
-    "message": "$2.99 una tantum"
+    "message": "$$2.99 una tantum"
   },
   "premiumBadge": {
     "message": "✨ Premium"

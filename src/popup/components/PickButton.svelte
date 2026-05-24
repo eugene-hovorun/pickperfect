@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { cn } from '$lib/utils';
+  import { cn } from "$lib/utils";
+  import { t } from "$lib/i18n";
 
   interface Props {
     picking: boolean;
@@ -13,33 +14,49 @@
 
 <div class="px-4 pb-3">
   {#if hasEyeDropper}
-    <button 
+    <button
       class={cn(
         "flex items-center justify-center gap-2 w-full py-3 px-4",
         "text-sm font-semibold text-primary-foreground rounded-xl transition-all",
         "bg-primary hover:bg-primary/90",
-        picking 
-          ? "opacity-70 cursor-wait" 
-          : "hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30 active:translate-y-0"
+        picking
+          ? "opacity-70 cursor-wait"
+          : "hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/30 active:translate-y-0",
       )}
-      onclick={onpick} 
+      onclick={onpick}
       disabled={picking}
     >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="stroke-white">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="stroke-white"
+      >
         <path d="m2 22 1-1h3l9-9" />
         <path d="M3 21v-3l9-9" />
-        <path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3L15 6" />
+        <path
+          d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3L15 6"
+        />
       </svg>
-      {picking ? 'Picking…' : 'Pick a Color'}
+      {picking ? t("picking") : t("pickAColor")}
     </button>
   {:else}
-    <div class="px-3 py-2.5 text-xs text-destructive bg-destructive/10 rounded-lg text-center">
-      EyeDropper API not available. Please use Chrome 95+.
+    <div
+      class="px-3 py-2.5 text-xs text-destructive bg-destructive/10 rounded-lg text-center"
+    >
+      {t("eyedropperUnavailable")}
     </div>
   {/if}
 
   {#if error}
-    <div class="mt-2 px-3 py-2.5 text-xs text-destructive bg-destructive/10 rounded-lg text-center">
+    <div
+      class="mt-2 px-3 py-2.5 text-xs text-destructive bg-destructive/10 rounded-lg text-center"
+    >
       {error}
     </div>
   {/if}

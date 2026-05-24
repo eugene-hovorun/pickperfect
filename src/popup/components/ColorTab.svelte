@@ -4,6 +4,7 @@
   import { formatColor, type ColorFormat } from "$lib/colors";
   import { copyToClipboard } from "$lib/useColorPicker";
   import type { ColorEntry } from "$lib/storage";
+  import { t } from "$lib/i18n";
 
   interface Props {
     currentColor: string | null;
@@ -57,7 +58,7 @@
 
   {#if !currentColor && history.length === 0}
     <div class="flex flex-col items-center gap-2 py-12 text-muted-foreground">
-      <p class="text-sm m-0">Pick your first color to get started</p>
+      <p class="text-sm m-0">{t("firstColorHint")}</p>
       <span
         class="text-[11px] font-medium px-2 py-0.5 bg-muted rounded font-mono text-muted-foreground"
       >

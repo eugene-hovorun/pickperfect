@@ -25,6 +25,7 @@
   import CompareTab from "./components/CompareTab.svelte";
   import TailwindMatch from "./components/TailwindMatch.svelte";
   import PaletteExtractor from "./components/PaletteExtractor.svelte";
+  import { t } from "$lib/i18n";
 
   // State
   let currentColor = $state<string | null>(null);
@@ -65,9 +66,7 @@
       history = await addToHistory(hex);
       await handleCopy(formatColor(hex, format));
     } catch (e: any) {
-      if (e?.name !== "AbortError") {
-        error = "Failed to pick color";
-      }
+      if (e?.name !== "AbortError") error = t("failedToPickColor");
     } finally {
       picking = false;
     }
@@ -163,7 +162,7 @@
         <div
           class="flex flex-col items-center gap-2 py-12 text-muted-foreground"
         >
-          <p class="text-sm m-0">Pick a color to see Tailwind matches</p>
+          <p class="text-sm m-0">{t("pickColorForTailwind")}</p>
         </div>
       {/if}
     {:else if activeTab === "compare"}
@@ -175,7 +174,7 @@
 
   <footer class="flex justify-center py-2 border-t border-border">
     <span class="text-[10px] text-muted-foreground opacity-60">
-      Ctrl+Shift+X to open
+      {t("shortcutHint")}
     </span>
   </footer>
 </main>

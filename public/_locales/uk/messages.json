@@ -141,7 +141,7 @@
     "message": "Перейти на Premium"
   },
   "premiumPrice": {
-    "message": "$2.99 одноразово"
+    "message": "$$2.99 одноразово"
   },
   "premiumBadge": {
     "message": "✨ Premium"

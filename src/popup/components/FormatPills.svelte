@@ -20,7 +20,7 @@
       class={cn(
         "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium tracking-wide ring-offset-background transition-all",
         "hover:text-foreground",
-        current === format && "bg-background text-foreground shadow-sm"
+        current === format && "bg-background text-foreground shadow-sm",
       )}
       onclick={() => onswitch(format)}
     >

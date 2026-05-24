@@ -141,7 +141,7 @@
     "message": "Przejdź na Premium"
   },
   "premiumPrice": {
-    "message": "$2.99 jednorazowo"
+    "message": "$$2.99 jednorazowo"
   },
   "premiumBadge": {
     "message": "✨ Premium"
