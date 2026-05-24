@@ -1,0 +1,189 @@
+{
+  "extensionName": {
+    "message": "PickPerfect — Selettore di Colori per Sviluppatori"
+  },
+  "extensionShortName": {
+    "message": "PickPerfect"
+  },
+  "extensionDescription": {
+    "message": "Seleziona colori da qualsiasi pixel dello schermo. Copia in HEX, RGB, HSL istantaneamente. Zero bloat, zero tracciamento, zero iniezione DOM."
+  },
+  "actionTitle": {
+    "message": "PickPerfect — Scegli un colore"
+  },
+  "commandDescription": {
+    "message": "Apri il selettore di colori PickPerfect"
+  },
+  "pickAColor": {
+    "message": "Scegli un Colore"
+  },
+  "picking": {
+    "message": "Selezione…"
+  },
+  "copied": {
+    "message": "Copiato!"
+  },
+  "copyAll": {
+    "message": "Copia tutto"
+  },
+  "clear": {
+    "message": "Cancella"
+  },
+  "tryAgain": {
+    "message": "Riprova"
+  },
+  "clickToCopy": {
+    "message": "Clicca per copiare"
+  },
+  "shortcutHint": {
+    "message": "Ctrl+Shift+X per aprire"
+  },
+  "tabColor": {
+    "message": "Colore"
+  },
+  "tabTailwind": {
+    "message": "Tailwind"
+  },
+  "tabCompare": {
+    "message": "Confronta"
+  },
+  "tabPalette": {
+    "message": "Palette"
+  },
+  "historyTitle": {
+    "message": "CRONOLOGIA"
+  },
+  "historyRightClickRemove": {
+    "message": "tasto destro per rimuovere"
+  },
+  "firstColorHint": {
+    "message": "Scegli il tuo primo colore per iniziare"
+  },
+  "failedToPickColor": {
+    "message": "Impossibile selezionare il colore"
+  },
+  "eyedropperUnavailable": {
+    "message": "EyeDropper API non disponibile. Usa Chrome 95+."
+  },
+  "contrastCheckerTitle": {
+    "message": "CONTROLLO CONTRASTO"
+  },
+  "contrastRatio": {
+    "message": "Rapporto di Contrasto"
+  },
+  "largeText": {
+    "message": "Testo Grande"
+  },
+  "normalText": {
+    "message": "Testo Normale"
+  },
+  "largeTextHint": {
+    "message": "Testo grande: 18pt+ o 14pt+ grassetto"
+  },
+  "selectTwoColors": {
+    "message": "SELEZIONA 2 COLORI"
+  },
+  "compareHint": {
+    "message": "Clicca su due colori per confrontarne il contrasto"
+  },
+  "pickColorsToCompare": {
+    "message": "Scegli prima i colori per confrontarli"
+  },
+  "nearestTailwindTitle": {
+    "message": "COLORE TAILWIND PIÙ VICINO"
+  },
+  "exactMatch": {
+    "message": "Corrispondenza Esatta"
+  },
+  "yourColor": {
+    "message": "Il Tuo Colore"
+  },
+  "pickColorForTailwind": {
+    "message": "Scegli un colore per vedere le corrispondenze Tailwind"
+  },
+  "pagePaletteTitle": {
+    "message": "PALETTE PAGINA"
+  },
+  "groupSimilar": {
+    "message": "Raggruppa simili"
+  },
+  "extracting": {
+    "message": "Estrazione..."
+  },
+  "extractColorsFromPage": {
+    "message": "Estrai Colori dalla Pagina"
+  },
+  "extractAllColorsHint": {
+    "message": "Estrai tutti i colori dalla scheda attiva"
+  },
+  "noColorsFound": {
+    "message": "Nessun colore trovato in questa pagina"
+  },
+  "failedToExtractColors": {
+    "message": "Impossibile estrarre i colori"
+  },
+  "extractAgain": {
+    "message": "Estrai di Nuovo"
+  },
+  "paletteTypeBackground": {
+    "message": "Sfondo"
+  },
+  "paletteTypeText": {
+    "message": "Testo"
+  },
+  "paletteTypeBorder": {
+    "message": "Bordo"
+  },
+  "paletteTypeMixed": {
+    "message": "Misto"
+  },
+  "upgradeToPremium": {
+    "message": "Passa a Premium"
+  },
+  "premiumPrice": {
+    "message": "$2.99 una tantum"
+  },
+  "premiumBadge": {
+    "message": "✨ Premium"
+  },
+  "premiumFeaturesIncluded": {
+    "message": "Tutte e 3 le funzioni premium incluse:"
+  },
+  "premiumFeaturesList": {
+    "message": "Tailwind • Confronta • Palette"
+  },
+  "featureTailwindTitle": {
+    "message": "Mappatura Colori Tailwind"
+  },
+  "featureTailwindDesc": {
+    "message": "Trova istantaneamente il colore Tailwind CSS più vicino con precisione."
+  },
+  "featureCompareTitle": {
+    "message": "Controllo Contrasto WCAG"
+  },
+  "featureCompareDesc": {
+    "message": "Confronta due colori per la conformità all'accessibilità (AA/AAA)."
+  },
+  "featurePaletteTitle": {
+    "message": "Estrazione Palette Pagina"
+  },
+  "featurePaletteDesc": {
+    "message": "Estrai tutti i colori da qualsiasi pagina web con un clic."
+  },
+  "percentMatch": {
+    "message": "$PLACEHOLDER$% di corrispondenza",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  },
+  "colorsFound": {
+    "message": "$PLACEHOLDER$ colori trovati",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  }
+}

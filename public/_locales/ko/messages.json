@@ -1,0 +1,189 @@
+{
+  "extensionName": {
+    "message": "PickPerfect — 개발자용 컬러 피커"
+  },
+  "extensionShortName": {
+    "message": "PickPerfect"
+  },
+  "extensionDescription": {
+    "message": "화면의 모든 픽셀에서 색상을 선택하세요. HEX, RGB, HSL로 즉시 복사. 불필요한 기능 없음, 추적 없음, DOM 주입 없음."
+  },
+  "actionTitle": {
+    "message": "PickPerfect — 색상 선택"
+  },
+  "commandDescription": {
+    "message": "PickPerfect 컬러 피커 열기"
+  },
+  "pickAColor": {
+    "message": "색상 선택"
+  },
+  "picking": {
+    "message": "선택 중…"
+  },
+  "copied": {
+    "message": "복사됨!"
+  },
+  "copyAll": {
+    "message": "모두 복사"
+  },
+  "clear": {
+    "message": "지우기"
+  },
+  "tryAgain": {
+    "message": "다시 시도"
+  },
+  "clickToCopy": {
+    "message": "클릭하여 복사"
+  },
+  "shortcutHint": {
+    "message": "Ctrl+Shift+X로 열기"
+  },
+  "tabColor": {
+    "message": "색상"
+  },
+  "tabTailwind": {
+    "message": "Tailwind"
+  },
+  "tabCompare": {
+    "message": "비교"
+  },
+  "tabPalette": {
+    "message": "팔레트"
+  },
+  "historyTitle": {
+    "message": "기록"
+  },
+  "historyRightClickRemove": {
+    "message": "우클릭으로 제거"
+  },
+  "firstColorHint": {
+    "message": "첫 번째 색상을 선택하여 시작하세요"
+  },
+  "failedToPickColor": {
+    "message": "색상 선택 실패"
+  },
+  "eyedropperUnavailable": {
+    "message": "EyeDropper API를 사용할 수 없습니다. Chrome 95+를 사용하세요."
+  },
+  "contrastCheckerTitle": {
+    "message": "대비 검사기"
+  },
+  "contrastRatio": {
+    "message": "대비율"
+  },
+  "largeText": {
+    "message": "큰 텍스트"
+  },
+  "normalText": {
+    "message": "일반 텍스트"
+  },
+  "largeTextHint": {
+    "message": "큰 텍스트: 18pt 이상 또는 14pt 이상 굵게"
+  },
+  "selectTwoColors": {
+    "message": "2가지 색상 선택"
+  },
+  "compareHint": {
+    "message": "두 색상을 클릭하여 대비율을 비교하세요"
+  },
+  "pickColorsToCompare": {
+    "message": "먼저 색상을 선택하여 비교하세요"
+  },
+  "nearestTailwindTitle": {
+    "message": "가장 가까운 Tailwind 색상"
+  },
+  "exactMatch": {
+    "message": "정확히 일치"
+  },
+  "yourColor": {
+    "message": "선택한 색상"
+  },
+  "pickColorForTailwind": {
+    "message": "색상을 선택하여 Tailwind 일치 항목 보기"
+  },
+  "pagePaletteTitle": {
+    "message": "페이지 팔레트"
+  },
+  "groupSimilar": {
+    "message": "유사한 색상 그룹화"
+  },
+  "extracting": {
+    "message": "추출 중..."
+  },
+  "extractColorsFromPage": {
+    "message": "페이지에서 색상 추출"
+  },
+  "extractAllColorsHint": {
+    "message": "활성 탭의 모든 색상 추출"
+  },
+  "noColorsFound": {
+    "message": "이 페이지에서 색상을 찾을 수 없습니다"
+  },
+  "failedToExtractColors": {
+    "message": "색상 추출 실패"
+  },
+  "extractAgain": {
+    "message": "다시 추출"
+  },
+  "paletteTypeBackground": {
+    "message": "배경"
+  },
+  "paletteTypeText": {
+    "message": "텍스트"
+  },
+  "paletteTypeBorder": {
+    "message": "테두리"
+  },
+  "paletteTypeMixed": {
+    "message": "혼합"
+  },
+  "upgradeToPremium": {
+    "message": "Premium으로 업그레이드"
+  },
+  "premiumPrice": {
+    "message": "$2.99 일회성"
+  },
+  "premiumBadge": {
+    "message": "✨ Premium"
+  },
+  "premiumFeaturesIncluded": {
+    "message": "3가지 프리미엄 기능 모두 포함:"
+  },
+  "premiumFeaturesList": {
+    "message": "Tailwind • 비교 • 팔레트"
+  },
+  "featureTailwindTitle": {
+    "message": "Tailwind 색상 매핑"
+  },
+  "featureTailwindDesc": {
+    "message": "정확도와 함께 가장 가까운 Tailwind CSS 색상을 즉시 찾기."
+  },
+  "featureCompareTitle": {
+    "message": "WCAG 대비 검사기"
+  },
+  "featureCompareDesc": {
+    "message": "두 색상의 접근성 준수 여부 확인 (AA/AAA)."
+  },
+  "featurePaletteTitle": {
+    "message": "페이지 팔레트 추출"
+  },
+  "featurePaletteDesc": {
+    "message": "한 번의 클릭으로 웹페이지의 모든 색상 추출."
+  },
+  "percentMatch": {
+    "message": "$PLACEHOLDER$% 일치",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  },
+  "colorsFound": {
+    "message": "$PLACEHOLDER$개 색상 발견",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  }
+}

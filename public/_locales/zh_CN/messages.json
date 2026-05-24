@@ -1,0 +1,189 @@
+{
+  "extensionName": {
+    "message": "PickPerfect — 开发者颜色拾取工具"
+  },
+  "extensionShortName": {
+    "message": "PickPerfect"
+  },
+  "extensionDescription": {
+    "message": "从屏幕任意像素拾取颜色，立即复制为 HEX、RGB、HSL 格式。零冗余，零追踪，零 DOM 注入。"
+  },
+  "actionTitle": {
+    "message": "PickPerfect — 拾取颜色"
+  },
+  "commandDescription": {
+    "message": "打开 PickPerfect 颜色拾取器"
+  },
+  "pickAColor": {
+    "message": "拾取颜色"
+  },
+  "picking": {
+    "message": "拾取中…"
+  },
+  "copied": {
+    "message": "已复制！"
+  },
+  "copyAll": {
+    "message": "全部复制"
+  },
+  "clear": {
+    "message": "清除"
+  },
+  "tryAgain": {
+    "message": "重试"
+  },
+  "clickToCopy": {
+    "message": "点击复制"
+  },
+  "shortcutHint": {
+    "message": "Ctrl+Shift+X 打开"
+  },
+  "tabColor": {
+    "message": "颜色"
+  },
+  "tabTailwind": {
+    "message": "Tailwind"
+  },
+  "tabCompare": {
+    "message": "对比"
+  },
+  "tabPalette": {
+    "message": "调色板"
+  },
+  "historyTitle": {
+    "message": "历史记录"
+  },
+  "historyRightClickRemove": {
+    "message": "右键删除"
+  },
+  "firstColorHint": {
+    "message": "拾取第一个颜色开始使用"
+  },
+  "failedToPickColor": {
+    "message": "拾取颜色失败"
+  },
+  "eyedropperUnavailable": {
+    "message": "EyeDropper API 不可用，请使用 Chrome 95+。"
+  },
+  "contrastCheckerTitle": {
+    "message": "对比度检测"
+  },
+  "contrastRatio": {
+    "message": "对比度"
+  },
+  "largeText": {
+    "message": "大号文字"
+  },
+  "normalText": {
+    "message": "普通文字"
+  },
+  "largeTextHint": {
+    "message": "大号文字：18pt+ 或 14pt+ 粗体"
+  },
+  "selectTwoColors": {
+    "message": "选择 2 种颜色"
+  },
+  "compareHint": {
+    "message": "点击两种颜色以比较其对比度"
+  },
+  "pickColorsToCompare": {
+    "message": "请先拾取颜色再进行对比"
+  },
+  "nearestTailwindTitle": {
+    "message": "最接近的 TAILWIND 颜色"
+  },
+  "exactMatch": {
+    "message": "完全匹配"
+  },
+  "yourColor": {
+    "message": "您的颜色"
+  },
+  "pickColorForTailwind": {
+    "message": "拾取颜色以查看 Tailwind 匹配"
+  },
+  "pagePaletteTitle": {
+    "message": "页面调色板"
+  },
+  "groupSimilar": {
+    "message": "合并相似"
+  },
+  "extracting": {
+    "message": "提取中..."
+  },
+  "extractColorsFromPage": {
+    "message": "从页面提取颜色"
+  },
+  "extractAllColorsHint": {
+    "message": "从当前标签页提取所有颜色"
+  },
+  "noColorsFound": {
+    "message": "此页面未找到颜色"
+  },
+  "failedToExtractColors": {
+    "message": "提取颜色失败"
+  },
+  "extractAgain": {
+    "message": "重新提取"
+  },
+  "paletteTypeBackground": {
+    "message": "背景"
+  },
+  "paletteTypeText": {
+    "message": "文字"
+  },
+  "paletteTypeBorder": {
+    "message": "边框"
+  },
+  "paletteTypeMixed": {
+    "message": "混合"
+  },
+  "upgradeToPremium": {
+    "message": "升级至 Premium"
+  },
+  "premiumPrice": {
+    "message": "$2.99 一次性"
+  },
+  "premiumBadge": {
+    "message": "✨ Premium"
+  },
+  "premiumFeaturesIncluded": {
+    "message": "包含全部 3 项高级功能："
+  },
+  "premiumFeaturesList": {
+    "message": "Tailwind • 对比 • 调色板"
+  },
+  "featureTailwindTitle": {
+    "message": "Tailwind 颜色映射"
+  },
+  "featureTailwindDesc": {
+    "message": "即时查找最接近的 Tailwind CSS 颜色及匹配精度。"
+  },
+  "featureCompareTitle": {
+    "message": "WCAG 对比度检测"
+  },
+  "featureCompareDesc": {
+    "message": "检测两种颜色的无障碍合规性（AA/AAA）。"
+  },
+  "featurePaletteTitle": {
+    "message": "页面调色板提取"
+  },
+  "featurePaletteDesc": {
+    "message": "一键提取任意网页的所有颜色。"
+  },
+  "percentMatch": {
+    "message": "$PLACEHOLDER$% 匹配",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  },
+  "colorsFound": {
+    "message": "找到 $PLACEHOLDER$ 种颜色",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  }
+}

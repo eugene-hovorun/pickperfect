@@ -1,0 +1,189 @@
+{
+  "extensionName": {
+    "message": "PickPerfect — 開発者向けカラーピッカー"
+  },
+  "extensionShortName": {
+    "message": "PickPerfect"
+  },
+  "extensionDescription": {
+    "message": "画面上の任意のピクセルから色を取得。HEX、RGB、HSL形式で即座にコピー。無駄なし、追跡なし、DOM注入なし。"
+  },
+  "actionTitle": {
+    "message": "PickPerfect — 色を選択"
+  },
+  "commandDescription": {
+    "message": "PickPerfectカラーピッカーを開く"
+  },
+  "pickAColor": {
+    "message": "色を選択"
+  },
+  "picking": {
+    "message": "選択中…"
+  },
+  "copied": {
+    "message": "コピーしました！"
+  },
+  "copyAll": {
+    "message": "すべてコピー"
+  },
+  "clear": {
+    "message": "クリア"
+  },
+  "tryAgain": {
+    "message": "再試行"
+  },
+  "clickToCopy": {
+    "message": "クリックしてコピー"
+  },
+  "shortcutHint": {
+    "message": "Ctrl+Shift+X で開く"
+  },
+  "tabColor": {
+    "message": "カラー"
+  },
+  "tabTailwind": {
+    "message": "Tailwind"
+  },
+  "tabCompare": {
+    "message": "比較"
+  },
+  "tabPalette": {
+    "message": "パレット"
+  },
+  "historyTitle": {
+    "message": "履歴"
+  },
+  "historyRightClickRemove": {
+    "message": "右クリックで削除"
+  },
+  "firstColorHint": {
+    "message": "最初の色を選んで始めましょう"
+  },
+  "failedToPickColor": {
+    "message": "色の取得に失敗しました"
+  },
+  "eyedropperUnavailable": {
+    "message": "EyeDropper APIが使用できません。Chrome 95+をお使いください。"
+  },
+  "contrastCheckerTitle": {
+    "message": "コントラスト チェッカー"
+  },
+  "contrastRatio": {
+    "message": "コントラスト比"
+  },
+  "largeText": {
+    "message": "大きいテキスト"
+  },
+  "normalText": {
+    "message": "通常のテキスト"
+  },
+  "largeTextHint": {
+    "message": "大きいテキスト：18pt以上または太字14pt以上"
+  },
+  "selectTwoColors": {
+    "message": "2色を選択"
+  },
+  "compareHint": {
+    "message": "2色をクリックしてコントラストを比較"
+  },
+  "pickColorsToCompare": {
+    "message": "比較するには先に色を選んでください"
+  },
+  "nearestTailwindTitle": {
+    "message": "最も近いTailwindカラー"
+  },
+  "exactMatch": {
+    "message": "完全一致"
+  },
+  "yourColor": {
+    "message": "選択した色"
+  },
+  "pickColorForTailwind": {
+    "message": "色を選択してTailwindの一致を確認"
+  },
+  "pagePaletteTitle": {
+    "message": "ページ パレット"
+  },
+  "groupSimilar": {
+    "message": "類似色をまとめる"
+  },
+  "extracting": {
+    "message": "抽出中..."
+  },
+  "extractColorsFromPage": {
+    "message": "ページから色を抽出"
+  },
+  "extractAllColorsHint": {
+    "message": "アクティブタブのすべての色を抽出"
+  },
+  "noColorsFound": {
+    "message": "このページに色が見つかりません"
+  },
+  "failedToExtractColors": {
+    "message": "色の抽出に失敗しました"
+  },
+  "extractAgain": {
+    "message": "再抽出"
+  },
+  "paletteTypeBackground": {
+    "message": "背景"
+  },
+  "paletteTypeText": {
+    "message": "テキスト"
+  },
+  "paletteTypeBorder": {
+    "message": "ボーダー"
+  },
+  "paletteTypeMixed": {
+    "message": "混合"
+  },
+  "upgradeToPremium": {
+    "message": "Premiumにアップグレード"
+  },
+  "premiumPrice": {
+    "message": "$2.99 買い切り"
+  },
+  "premiumBadge": {
+    "message": "✨ Premium"
+  },
+  "premiumFeaturesIncluded": {
+    "message": "3つのプレミアム機能すべて含む："
+  },
+  "premiumFeaturesList": {
+    "message": "Tailwind • 比較 • パレット"
+  },
+  "featureTailwindTitle": {
+    "message": "Tailwindカラーマッピング"
+  },
+  "featureTailwindDesc": {
+    "message": "最も近いTailwind CSSカラーを精度付きで即座に検索。"
+  },
+  "featureCompareTitle": {
+    "message": "WCAGコントラストチェッカー"
+  },
+  "featureCompareDesc": {
+    "message": "2色のアクセシビリティ適合性を確認（AA/AAA）。"
+  },
+  "featurePaletteTitle": {
+    "message": "ページパレット抽出"
+  },
+  "featurePaletteDesc": {
+    "message": "ワンクリックでWebページのすべての色を抽出。"
+  },
+  "percentMatch": {
+    "message": "$PLACEHOLDER$%一致",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  },
+  "colorsFound": {
+    "message": "$PLACEHOLDER$色が見つかりました",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "extensionName": {
+    "message": "PickPerfect — Пипетка для Разработчиков"
+  },
+  "extensionShortName": {
+    "message": "PickPerfect"
+  },
+  "extensionDescription": {
+    "message": "Выбирайте цвета с любого пикселя экрана. Копируйте в HEX, RGB, HSL мгновенно. Без лишнего, без слежки, без инъекций в DOM."
+  },
+  "actionTitle": {
+    "message": "PickPerfect — Выбрать цвет"
+  },
+  "commandDescription": {
+    "message": "Открыть пипетку PickPerfect"
+  },
+  "pickAColor": {
+    "message": "Выбрать Цвет"
+  },
+  "picking": {
+    "message": "Выбор…"
+  },
+  "copied": {
+    "message": "Скопировано!"
+  },
+  "copyAll": {
+    "message": "Копировать всё"
+  },
+  "clear": {
+    "message": "Очистить"
+  },
+  "tryAgain": {
+    "message": "Попробовать снова"
+  },
+  "clickToCopy": {
+    "message": "Нажмите для копирования"
+  },
+  "shortcutHint": {
+    "message": "Ctrl+Shift+X для открытия"
+  },
+  "tabColor": {
+    "message": "Цвет"
+  },
+  "tabTailwind": {
+    "message": "Tailwind"
+  },
+  "tabCompare": {
+    "message": "Сравнение"
+  },
+  "tabPalette": {
+    "message": "Палитра"
+  },
+  "historyTitle": {
+    "message": "ИСТОРИЯ"
+  },
+  "historyRightClickRemove": {
+    "message": "правый клик для удаления"
+  },
+  "firstColorHint": {
+    "message": "Выберите первый цвет, чтобы начать"
+  },
+  "failedToPickColor": {
+    "message": "Не удалось выбрать цвет"
+  },
+  "eyedropperUnavailable": {
+    "message": "EyeDropper API недоступен. Используйте Chrome 95+."
+  },
+  "contrastCheckerTitle": {
+    "message": "ПРОВЕРКА КОНТРАСТА"
+  },
+  "contrastRatio": {
+    "message": "Коэффициент Контраста"
+  },
+  "largeText": {
+    "message": "Крупный Текст"
+  },
+  "normalText": {
+    "message": "Обычный Текст"
+  },
+  "largeTextHint": {
+    "message": "Крупный текст: 18pt+ или 14pt+ жирный"
+  },
+  "selectTwoColors": {
+    "message": "ВЫБЕРИТЕ 2 ЦВЕТА"
+  },
+  "compareHint": {
+    "message": "Нажмите на два цвета для сравнения контраста"
+  },
+  "pickColorsToCompare": {
+    "message": "Сначала выберите цвета для сравнения"
+  },
+  "nearestTailwindTitle": {
+    "message": "БЛИЖАЙШИЙ ЦВЕТ TAILWIND"
+  },
+  "exactMatch": {
+    "message": "Точное Совпадение"
+  },
+  "yourColor": {
+    "message": "Ваш Цвет"
+  },
+  "pickColorForTailwind": {
+    "message": "Выберите цвет для просмотра совпадений Tailwind"
+  },
+  "pagePaletteTitle": {
+    "message": "ПАЛИТРА СТРАНИЦЫ"
+  },
+  "groupSimilar": {
+    "message": "Группировать похожие"
+  },
+  "extracting": {
+    "message": "Извлечение..."
+  },
+  "extractColorsFromPage": {
+    "message": "Извлечь Цвета со Страницы"
+  },
+  "extractAllColorsHint": {
+    "message": "Извлечь все цвета из активной вкладки"
+  },
+  "noColorsFound": {
+    "message": "Цвета на этой странице не найдены"
+  },
+  "failedToExtractColors": {
+    "message": "Не удалось извлечь цвета"
+  },
+  "extractAgain": {
+    "message": "Извлечь Снова"
+  },
+  "paletteTypeBackground": {
+    "message": "Фон"
+  },
+  "paletteTypeText": {
+    "message": "Текст"
+  },
+  "paletteTypeBorder": {
+    "message": "Рамка"
+  },
+  "paletteTypeMixed": {
+    "message": "Смешанный"
+  },
+  "upgradeToPremium": {
+    "message": "Перейти на Premium"
+  },
+  "premiumPrice": {
+    "message": "$2.99 единоразово"
+  },
+  "premiumBadge": {
+    "message": "✨ Premium"
+  },
+  "premiumFeaturesIncluded": {
+    "message": "Все 3 премиум-функции включены:"
+  },
+  "premiumFeaturesList": {
+    "message": "Tailwind • Сравнение • Палитра"
+  },
+  "featureTailwindTitle": {
+    "message": "Подбор Цветов Tailwind"
+  },
+  "featureTailwindDesc": {
+    "message": "Мгновенно найдите ближайший цвет Tailwind CSS с точностью совпадения."
+  },
+  "featureCompareTitle": {
+    "message": "Проверка Контраста WCAG"
+  },
+  "featureCompareDesc": {
+    "message": "Сравните два цвета на соответствие стандартам доступности (AA/AAA)."
+  },
+  "featurePaletteTitle": {
+    "message": "Извлечение Палитры Страницы"
+  },
+  "featurePaletteDesc": {
+    "message": "Извлеките все цвета с любой веб-страницы одним кликом."
+  },
+  "percentMatch": {
+    "message": "совпадение $PLACEHOLDER$%",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  },
+  "colorsFound": {
+    "message": "найдено $PLACEHOLDER$ цветов",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  }
+}

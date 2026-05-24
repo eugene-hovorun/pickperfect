@@ -1,0 +1,189 @@
+{
+  "extensionName": {
+    "message": "PickPerfect — Próbnik Kolorów dla Deweloperów"
+  },
+  "extensionShortName": {
+    "message": "PickPerfect"
+  },
+  "extensionDescription": {
+    "message": "Próbkuj kolory z dowolnego piksela ekranu. Kopiuj jako HEX, RGB, HSL błyskawicznie. Zero balastu, zero śledzenia, zero iniekcji DOM."
+  },
+  "actionTitle": {
+    "message": "PickPerfect — Wybierz kolor"
+  },
+  "commandDescription": {
+    "message": "Otwórz próbnik kolorów PickPerfect"
+  },
+  "pickAColor": {
+    "message": "Wybierz Kolor"
+  },
+  "picking": {
+    "message": "Pobieranie…"
+  },
+  "copied": {
+    "message": "Skopiowano!"
+  },
+  "copyAll": {
+    "message": "Kopiuj wszystko"
+  },
+  "clear": {
+    "message": "Wyczyść"
+  },
+  "tryAgain": {
+    "message": "Spróbuj ponownie"
+  },
+  "clickToCopy": {
+    "message": "Kliknij, aby skopiować"
+  },
+  "shortcutHint": {
+    "message": "Ctrl+Shift+X, aby otworzyć"
+  },
+  "tabColor": {
+    "message": "Kolor"
+  },
+  "tabTailwind": {
+    "message": "Tailwind"
+  },
+  "tabCompare": {
+    "message": "Porównaj"
+  },
+  "tabPalette": {
+    "message": "Paleta"
+  },
+  "historyTitle": {
+    "message": "HISTORIA"
+  },
+  "historyRightClickRemove": {
+    "message": "prawy przycisk aby usunąć"
+  },
+  "firstColorHint": {
+    "message": "Wybierz pierwszy kolor, aby rozpocząć"
+  },
+  "failedToPickColor": {
+    "message": "Nie udało się pobrać koloru"
+  },
+  "eyedropperUnavailable": {
+    "message": "EyeDropper API niedostępne. Użyj Chrome 95+."
+  },
+  "contrastCheckerTitle": {
+    "message": "SPRAWDZANIE KONTRASTU"
+  },
+  "contrastRatio": {
+    "message": "Współczynnik Kontrastu"
+  },
+  "largeText": {
+    "message": "Duży Tekst"
+  },
+  "normalText": {
+    "message": "Normalny Tekst"
+  },
+  "largeTextHint": {
+    "message": "Duży tekst: 18pt+ lub 14pt+ pogrubiony"
+  },
+  "selectTwoColors": {
+    "message": "WYBIERZ 2 KOLORY"
+  },
+  "compareHint": {
+    "message": "Kliknij dwa kolory, aby porównać ich kontrast"
+  },
+  "pickColorsToCompare": {
+    "message": "Najpierw wybierz kolory do porównania"
+  },
+  "nearestTailwindTitle": {
+    "message": "NAJBLIŻSZY KOLOR TAILWIND"
+  },
+  "exactMatch": {
+    "message": "Dokładne Dopasowanie"
+  },
+  "yourColor": {
+    "message": "Twój Kolor"
+  },
+  "pickColorForTailwind": {
+    "message": "Wybierz kolor, aby zobaczyć dopasowania Tailwind"
+  },
+  "pagePaletteTitle": {
+    "message": "PALETA STRONY"
+  },
+  "groupSimilar": {
+    "message": "Grupuj podobne"
+  },
+  "extracting": {
+    "message": "Wyodrębnianie..."
+  },
+  "extractColorsFromPage": {
+    "message": "Wyodrębnij Kolory ze Strony"
+  },
+  "extractAllColorsHint": {
+    "message": "Wyodrębnij wszystkie kolory z aktywnej karty"
+  },
+  "noColorsFound": {
+    "message": "Nie znaleziono kolorów na tej stronie"
+  },
+  "failedToExtractColors": {
+    "message": "Nie udało się wyodrębnić kolorów"
+  },
+  "extractAgain": {
+    "message": "Wyodrębnij Ponownie"
+  },
+  "paletteTypeBackground": {
+    "message": "Tło"
+  },
+  "paletteTypeText": {
+    "message": "Tekst"
+  },
+  "paletteTypeBorder": {
+    "message": "Obramowanie"
+  },
+  "paletteTypeMixed": {
+    "message": "Mieszany"
+  },
+  "upgradeToPremium": {
+    "message": "Przejdź na Premium"
+  },
+  "premiumPrice": {
+    "message": "$2.99 jednorazowo"
+  },
+  "premiumBadge": {
+    "message": "✨ Premium"
+  },
+  "premiumFeaturesIncluded": {
+    "message": "Wszystkie 3 funkcje premium w zestawie:"
+  },
+  "premiumFeaturesList": {
+    "message": "Tailwind • Porównaj • Paleta"
+  },
+  "featureTailwindTitle": {
+    "message": "Mapowanie Kolorów Tailwind"
+  },
+  "featureTailwindDesc": {
+    "message": "Błyskawicznie znajdź najbliższy kolor Tailwind CSS z dokładnością dopasowania."
+  },
+  "featureCompareTitle": {
+    "message": "Sprawdzanie Kontrastu WCAG"
+  },
+  "featureCompareDesc": {
+    "message": "Porównaj dwa kolory pod kątem zgodności z dostępnością (AA/AAA)."
+  },
+  "featurePaletteTitle": {
+    "message": "Wyodrębnianie Palety Strony"
+  },
+  "featurePaletteDesc": {
+    "message": "Wyodrębnij wszystkie kolory z dowolnej strony jednym kliknięciem."
+  },
+  "percentMatch": {
+    "message": "$PLACEHOLDER$% dopasowania",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  },
+  "colorsFound": {
+    "message": "znaleziono $PLACEHOLDER$ kolorów",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  }
+}

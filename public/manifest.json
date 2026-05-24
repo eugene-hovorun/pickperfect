@@ -1,14 +1,15 @@
 {
   "manifest_version": 3,
-  "name": "PickPerfect — Color Picker for Developers",
-  "short_name": "PickPerfect",
+  "name": "__MSG_extensionName__",
+  "short_name": "__MSG_extensionShortName__",
   "version": "2.2.0",
-  "description": "Pick colors from any screen pixel. Copy as HEX, RGB, HSL instantly. Zero bloat, zero tracking, zero DOM injection.",
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "en",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["https://extensionpay.com/*"],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "PickPerfect — Pick a color"
+    "default_title": "__MSG_actionTitle__"
   },
   "background": {
     "service_worker": "background.js",
@@ -27,7 +28,7 @@
         "default": "Ctrl+Shift+X",
         "mac": "Command+Shift+X"
       },
-      "description": "Open PickPerfect color picker"
+      "description": "__MSG_commandDescription__"
     }
   },
   "icons": {

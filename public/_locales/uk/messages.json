@@ -1,0 +1,189 @@
+{
+  "extensionName": {
+    "message": "PickPerfect — Піпетка для Розробників"
+  },
+  "extensionShortName": {
+    "message": "PickPerfect"
+  },
+  "extensionDescription": {
+    "message": "Вибирайте кольори з будь-якого пікселя екрана. Копіюйте у HEX, RGB, HSL миттєво. Без зайвого, без стеження, без ін'єкцій у DOM."
+  },
+  "actionTitle": {
+    "message": "PickPerfect — Вибрати колір"
+  },
+  "commandDescription": {
+    "message": "Відкрити піпетку PickPerfect"
+  },
+  "pickAColor": {
+    "message": "Вибрати Колір"
+  },
+  "picking": {
+    "message": "Вибір…"
+  },
+  "copied": {
+    "message": "Скопійовано!"
+  },
+  "copyAll": {
+    "message": "Копіювати все"
+  },
+  "clear": {
+    "message": "Очистити"
+  },
+  "tryAgain": {
+    "message": "Спробувати знову"
+  },
+  "clickToCopy": {
+    "message": "Натисніть для копіювання"
+  },
+  "shortcutHint": {
+    "message": "Ctrl+Shift+X для відкриття"
+  },
+  "tabColor": {
+    "message": "Колір"
+  },
+  "tabTailwind": {
+    "message": "Tailwind"
+  },
+  "tabCompare": {
+    "message": "Порівняння"
+  },
+  "tabPalette": {
+    "message": "Палітра"
+  },
+  "historyTitle": {
+    "message": "ІСТОРІЯ"
+  },
+  "historyRightClickRemove": {
+    "message": "правий клік для видалення"
+  },
+  "firstColorHint": {
+    "message": "Виберіть перший колір, щоб почати"
+  },
+  "failedToPickColor": {
+    "message": "Не вдалося вибрати колір"
+  },
+  "eyedropperUnavailable": {
+    "message": "EyeDropper API недоступний. Використовуйте Chrome 95+."
+  },
+  "contrastCheckerTitle": {
+    "message": "ПЕРЕВІРКА КОНТРАСТУ"
+  },
+  "contrastRatio": {
+    "message": "Коефіцієнт Контрасту"
+  },
+  "largeText": {
+    "message": "Великий Текст"
+  },
+  "normalText": {
+    "message": "Звичайний Текст"
+  },
+  "largeTextHint": {
+    "message": "Великий текст: 18pt+ або 14pt+ жирний"
+  },
+  "selectTwoColors": {
+    "message": "ВИБЕРІТЬ 2 КОЛЬОРИ"
+  },
+  "compareHint": {
+    "message": "Натисніть на два кольори для порівняння контрасту"
+  },
+  "pickColorsToCompare": {
+    "message": "Спочатку виберіть кольори для порівняння"
+  },
+  "nearestTailwindTitle": {
+    "message": "НАЙБЛИЖЧИЙ КОЛІР TAILWIND"
+  },
+  "exactMatch": {
+    "message": "Точний Збіг"
+  },
+  "yourColor": {
+    "message": "Ваш Колір"
+  },
+  "pickColorForTailwind": {
+    "message": "Виберіть колір для перегляду збігів Tailwind"
+  },
+  "pagePaletteTitle": {
+    "message": "ПАЛІТРА СТОРІНКИ"
+  },
+  "groupSimilar": {
+    "message": "Групувати схожі"
+  },
+  "extracting": {
+    "message": "Видобування..."
+  },
+  "extractColorsFromPage": {
+    "message": "Видобути Кольори зі Сторінки"
+  },
+  "extractAllColorsHint": {
+    "message": "Видобути всі кольори з активної вкладки"
+  },
+  "noColorsFound": {
+    "message": "Кольори на цій сторінці не знайдено"
+  },
+  "failedToExtractColors": {
+    "message": "Не вдалося видобути кольори"
+  },
+  "extractAgain": {
+    "message": "Видобути Знову"
+  },
+  "paletteTypeBackground": {
+    "message": "Фон"
+  },
+  "paletteTypeText": {
+    "message": "Текст"
+  },
+  "paletteTypeBorder": {
+    "message": "Рамка"
+  },
+  "paletteTypeMixed": {
+    "message": "Змішаний"
+  },
+  "upgradeToPremium": {
+    "message": "Перейти на Premium"
+  },
+  "premiumPrice": {
+    "message": "$2.99 одноразово"
+  },
+  "premiumBadge": {
+    "message": "✨ Premium"
+  },
+  "premiumFeaturesIncluded": {
+    "message": "Усі 3 преміум-функції включено:"
+  },
+  "premiumFeaturesList": {
+    "message": "Tailwind • Порівняння • Палітра"
+  },
+  "featureTailwindTitle": {
+    "message": "Підбір Кольорів Tailwind"
+  },
+  "featureTailwindDesc": {
+    "message": "Миттєво знайдіть найближчий колір Tailwind CSS з точністю збігу."
+  },
+  "featureCompareTitle": {
+    "message": "Перевірка Контрасту WCAG"
+  },
+  "featureCompareDesc": {
+    "message": "Порівняйте два кольори на відповідність стандартам доступності (AA/AAA)."
+  },
+  "featurePaletteTitle": {
+    "message": "Видобування Палітри Сторінки"
+  },
+  "featurePaletteDesc": {
+    "message": "Видобудьте всі кольори з будь-якої веб-сторінки одним кліком."
+  },
+  "percentMatch": {
+    "message": "збіг $PLACEHOLDER$%",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  },
+  "colorsFound": {
+    "message": "знайдено $PLACEHOLDER$ кольорів",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  }
+}

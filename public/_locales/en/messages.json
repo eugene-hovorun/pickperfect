@@ -1,0 +1,189 @@
+{
+  "extensionName": {
+    "message": "PickPerfect — Color Picker for Developers"
+  },
+  "extensionShortName": {
+    "message": "PickPerfect"
+  },
+  "extensionDescription": {
+    "message": "Pick colors from any screen pixel. Copy as HEX, RGB, HSL instantly. Zero bloat, zero tracking, zero DOM injection."
+  },
+  "actionTitle": {
+    "message": "PickPerfect — Pick a color"
+  },
+  "commandDescription": {
+    "message": "Open PickPerfect color picker"
+  },
+  "pickAColor": {
+    "message": "Pick a Color"
+  },
+  "picking": {
+    "message": "Picking…"
+  },
+  "copied": {
+    "message": "Copied!"
+  },
+  "copyAll": {
+    "message": "Copy all"
+  },
+  "clear": {
+    "message": "Clear"
+  },
+  "tryAgain": {
+    "message": "Try Again"
+  },
+  "clickToCopy": {
+    "message": "Click to copy"
+  },
+  "shortcutHint": {
+    "message": "Ctrl+Shift+X to open"
+  },
+  "tabColor": {
+    "message": "Color"
+  },
+  "tabTailwind": {
+    "message": "Tailwind"
+  },
+  "tabCompare": {
+    "message": "Compare"
+  },
+  "tabPalette": {
+    "message": "Palette"
+  },
+  "historyTitle": {
+    "message": "HISTORY"
+  },
+  "historyRightClickRemove": {
+    "message": "right-click to remove"
+  },
+  "firstColorHint": {
+    "message": "Pick your first color to get started"
+  },
+  "failedToPickColor": {
+    "message": "Failed to pick color"
+  },
+  "eyedropperUnavailable": {
+    "message": "EyeDropper API not available. Please use Chrome 95+."
+  },
+  "contrastCheckerTitle": {
+    "message": "CONTRAST CHECKER"
+  },
+  "contrastRatio": {
+    "message": "Contrast Ratio"
+  },
+  "largeText": {
+    "message": "Large Text"
+  },
+  "normalText": {
+    "message": "Normal Text"
+  },
+  "largeTextHint": {
+    "message": "Large text: 18pt+ or 14pt+ bold"
+  },
+  "selectTwoColors": {
+    "message": "SELECT 2 COLORS"
+  },
+  "compareHint": {
+    "message": "Click two colors to compare their contrast ratio"
+  },
+  "pickColorsToCompare": {
+    "message": "Pick colors first to compare them"
+  },
+  "nearestTailwindTitle": {
+    "message": "NEAREST TAILWIND COLOR"
+  },
+  "exactMatch": {
+    "message": "Exact Match"
+  },
+  "yourColor": {
+    "message": "Your Color"
+  },
+  "pickColorForTailwind": {
+    "message": "Pick a color to see Tailwind matches"
+  },
+  "pagePaletteTitle": {
+    "message": "PAGE PALETTE"
+  },
+  "groupSimilar": {
+    "message": "Group similar"
+  },
+  "extracting": {
+    "message": "Extracting..."
+  },
+  "extractColorsFromPage": {
+    "message": "Extract Colors from Page"
+  },
+  "extractAllColorsHint": {
+    "message": "Extract all colors from the active tab"
+  },
+  "noColorsFound": {
+    "message": "No colors found on this page"
+  },
+  "failedToExtractColors": {
+    "message": "Failed to extract colors"
+  },
+  "extractAgain": {
+    "message": "Extract Again"
+  },
+  "paletteTypeBackground": {
+    "message": "Background"
+  },
+  "paletteTypeText": {
+    "message": "Text"
+  },
+  "paletteTypeBorder": {
+    "message": "Border"
+  },
+  "paletteTypeMixed": {
+    "message": "Mixed"
+  },
+  "upgradeToPremium": {
+    "message": "Upgrade to Premium"
+  },
+  "premiumPrice": {
+    "message": "$2.99 once"
+  },
+  "premiumBadge": {
+    "message": "✨ Premium"
+  },
+  "premiumFeaturesIncluded": {
+    "message": "All 3 premium features included:"
+  },
+  "premiumFeaturesList": {
+    "message": "Tailwind • Compare • Palette"
+  },
+  "featureTailwindTitle": {
+    "message": "Tailwind Color Mapping"
+  },
+  "featureTailwindDesc": {
+    "message": "Find the nearest Tailwind CSS color instantly with match accuracy."
+  },
+  "featureCompareTitle": {
+    "message": "WCAG Contrast Checker"
+  },
+  "featureCompareDesc": {
+    "message": "Compare two colors for accessibility compliance (AA/AAA)."
+  },
+  "featurePaletteTitle": {
+    "message": "Page Palette Extraction"
+  },
+  "featurePaletteDesc": {
+    "message": "Extract all colors from any webpage with one click."
+  },
+  "percentMatch": {
+    "message": "$PLACEHOLDER$% match",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  },
+  "colorsFound": {
+    "message": "$PLACEHOLDER$ colors found",
+    "placeholders": {
+      "PLACEHOLDER": {
+        "content": "$1"
+      }
+    }
+  }
+}
